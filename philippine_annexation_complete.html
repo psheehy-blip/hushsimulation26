@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philippine Annexation: Simulation/Debate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            line-height: 1.8;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .nav-bar {
+            background-color: #8b0000;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-bar h1 {
+            color: #ffd700;
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .nav-btn {
+            background-color: #dc143c;
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-size: 0.95rem;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #ffd700;
+            color: #8b0000;
+        }
+
+        .nav-btn.active {
+            background-color: #ffd700;
+            color: #8b0000;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .header {
+            border-bottom: 3px solid #8b0000;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .header h2 {
+            font-size: 2rem;
+            color: #8b0000;
+            margin-bottom: 0.5rem;
+        }
+
+        .header h3 {
+            font-size: 1.3rem;
+            color: #666;
+            font-weight: normal;
+        }
+
+        .context-box {
+            background-color: #f0f8ff;
+            border-left: 4px solid #dc143c;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .context-box h4 {
+            color: #8b0000;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ff8c00;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .quote-box {
+            background-color: #ffffcc;
+            border-left: 4px solid #ffd700;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            border-radius: 4px;
+        }
+
+        .camp-card {
+            background-color: #f9f9f9;
+            border: 2px solid #dc143c;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .camp-card h4 {
+            color: #8b0000;
+            margin-bottom: 1rem;
+            font-size: 1.15rem;
+        }
+
+        .camp-card p {
+            margin-bottom: 0.5rem;
+        }
+
+        .role-card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .role-header {
+            color: #8b0000;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .term-card {
+            background-color: #f9f9f9;
+            border-left: 4px solid #dc143c;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .term-card h5 {
+            color: #8b0000;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            background-color: #dc143c;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 0.5rem 0;
+        }
+
+        .btn:hover {
+            background-color: #8b0000;
+            transform: translateY(-2px);
+        }
+
+        .overview-text {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            margin: 1.5rem 0;
+        }
+
+        @media (max-width: 700px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+
+            .header h2 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        @media print {
+            .nav-bar {
+                display: none;
+            }
+
+            body {
+                background-color: white;
+            }
+
+            .container {
+                box-shadow: none;
+                margin: 0;
+                padding: 1rem;
+            }
+
+            .section {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-bar">
+    <h1>🇺🇸 Philippine Annexation: Simulation/Debate 🇵🇭</h1>
+    <div class="nav-buttons">
+        <button class="nav-btn active" onclick="showSection('home', this)">Home</button>
+        <button class="nav-btn" onclick="showSection('teacher', this)">Teacher Guide</button>
+        <button class="nav-btn" onclick="showSection('prep', this)">Student Prep</button>
+        <button class="nav-btn" onclick="showSection('roles', this)">Role Guides</button>
+        <button class="nav-btn" onclick="showSection('terms', this)">Key Terms</button>
+        <button class="nav-btn" onclick="showSection('postdebate', this)">Essential Reading</button>
+        <button class="nav-btn" onclick="showSection('graded', this)">Graded Work</button>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- HOME SECTION -->
+    <div id="home" class="section active">
+        <div class="header">
+            <h2>Philippine Annexation: Simulation/Debate</h2>
+            <h3>Should the United States annex the Philippines? 1898–1899</h3>
+        </div>
+
+        <div class="overview-text">
+            <p>In 1898 the United States defeated Spain and seized the Philippines. But seizing territory is not the same as deciding what to do with it. The question before President McKinley and Congress was stark: what do we do with 7,100 islands and 8 million people, 8,600 miles from Washington?</p>
+
+            <p>This simulation/debate invites you to inhabit that moment. You will take on historical roles and argue for different approaches to the Philippines question. Your task is to figure out what your character would advocate, and why — and to defend that position against intelligent opposition.</p>
+        </div>
+
+        <div class="context-box">
+            <h4>The Question Before the Nation</h4>
+            <p>The US has options — but don't assume the choices are obvious. The policy spectrum is wider than "annex" or "don't annex." Political, strategic, moral, and racial dimensions don't align neatly. Economic interests pull in different directions. Constitutional arguments clash with humanitarian ones. Racist stereotypes compete with ideals of freedom. Your job is to figure out what your character would advocate and why — given their interests, their values, their reading of the situation, and the evidence available to them in 1898–1899.</p>
+        </div>
+
+        <div class="context-box">
+            <h4>Note on Historical Evidence</h4>
+            <p>Some characters in this simulation directly addressed the Philippines question in congressional speeches, newspaper columns, or published essays—Roosevelt, Beveridge, Hoar, Bryan, and Aguinaldo among them. Others are "contextual" figures: their documented arguments, experiences, and positions on related questions (imperial expansion, race, labor, colonial violence) are directly relevant to the Philippines debate even if they didn't write policy memos about Manila. Both types are historically legitimate and both types appear in this simulation.</p>
+        </div>
+
+        <div class="overview-text">
+            <h4 style="color: #8b0000; margin: 1.5rem 0 0.5rem 0;">Format: Two 75-Minute Sessions</h4>
+            <p><strong>Session 1: "Advise the President."</strong> You will present your position directly to President McKinley (played by your teacher). Make your case. The President will ask probing questions. You will defend your argument. Afterward, you'll caucus with your camp to write a formal position statement.</p>
+
+            <p><strong>Session 2: "Senate Foreign Relations Committee Hearing."</strong> You will testify before a formal hearing. Opposing camps will cross-examine you. You'll hear arguments from the press gallery. The hearing concludes with a brief written reflection.</p>
+        </div>
+
+        <div class="context-box">
+            <h4>Empire Before 1898: The Larger Context</h4>
+            <p>The Philippines question didn't appear in isolation. By 1898, the United States was already engaged in expansion: the Alaska purchase (1867), commercial interest in China and the Open Door policy, a booming yellow press that stoked war fever with Spain, and—crucially—the overthrow and annexation of Hawaiʻi (1893–1898). The Philippines debate was the culmination of this trajectory, not its beginning. Understanding this context helps you understand why some Americans championed annexation and others resisted it.</p>
+        </div>
+
+    </div>
+
+    <!-- TEACHER GUIDE SECTION -->
+    <div id="teacher" class="section">
+        <div class="header">
+            <h2>Teacher Guide</h2>
+        </div>
+
+        <div class="overview-text">
+            <p>This section outlines the structure, role assignments, and pedagogical approach for the two-session simulation/debate.</p>
+        </div>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">Two-Session Format</h3>
+
+        <div class="context-box">
+            <h4>Session 1: "Advise the President" (75 minutes)</h4>
+            <p><strong>Setup:</strong> You serve as President McKinley. Students present their positions to you in turn or in small groups, depending on class size and time. Each student (or small group) should have 3–5 minutes to make their case. Your role is to listen and then probe: "What about this alternative? How do you answer that objection? Where is your evidence?"</p>
+
+            <p><strong>Outcome:</strong> After the initial presentations, students caucus by camp (Expansionists, Anti-Imperialists, Labor/Socialists, Colonized/Racial Justice, Press). Each camp produces a written position statement using Truemark or similar tool (avoid shared Google Docs to prevent AI and copyright complications). This statement should synthesize their arguments and be ready to defend in Session 2.</p>
+        </div>
+
+        <div class="context-box">
+            <h4>Session 2: "Senate Foreign Relations Committee Hearing" (75 minutes)</h4>
+            <p><strong>Setup:</strong> Designate a student or co-teacher to chair the committee. Each camp designates a primary witness (or witnesses testify sequentially). The witness delivers a 2–3 minute opening statement, then opposing camps ask 2–3 hard questions. The press gallery (2 students) takes notes and delivers a brief report at the end.</p>
+
+            <p><strong>Outcome:</strong> After the hearing, students write a short reflection (homework or brief in-class): "What surprised you? What would you do differently if you were preparing this again? Where did you find your evidence most compelling?"</p>
+        </div>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">Role Assignments and Camps</h3>
+
+        <div class="camp-card">
+            <h4>Camp 1: Expansionists</h4>
+            <p><strong>Core roles (assign first):</strong> Theodore Roosevelt, Albert J. Beveridge, Alfred Thayer Mahan, John T. Morgan</p>
+            <p><strong>Strong additions:</strong> John Hay, William McKinley (teacher), James H. Blount, General Elwell S. Otis</p>
+            <p>These figures champion US expansion on grounds of national greatness, strategic positioning in Asia, economic advantage, and racial/civilizational superiority.</p>
+        </div>
+
+        <div class="camp-card">
+            <h4>Camp 2: Anti-Imperialists</h4>
+            <p><strong>Core roles (assign first):</strong> George F. Hoar, Andrew Carnegie, William Jennings Bryan</p>
+            <p><strong>Strong additions:</strong> Mark Twain, William James, Benjamin Tillman (with teacher support for sensitive racial aspects)</p>
+            <p>These figures oppose annexation on constitutional, moral, and anti-authoritarian grounds. Some emphasize labor concerns; others emphasize self-determination and the contradiction with American ideals.</p>
+        </div>
+
+        <div class="camp-card">
+            <h4>Camp 3: Labor/Socialist Perspective</h4>
+            <p><strong>Core role:</strong> Samuel Gompers (AFL President)</p>
+            <p><strong>Optional:</strong> Eugene V. Debs (Socialist)</p>
+            <p>Gompers opposes annexation because of labor displacement and the importation of cheap Filipino labor. Debs frames it as capitalist imperialism. These roles highlight working-class resistance to empire.</p>
+        </div>
+
+        <div class="camp-card">
+            <h4>Camp 4: Colonized/Racial Justice Perspectives</h4>
+            <p><strong>Core roles:</strong> Emilio Aguinaldo (Philippine revolutionary leader), Archibald Grimké (African American intellectual and Anti-Imperialist League officer)</p>
+            <p><strong>Strong additions:</strong> Ida B. Wells, W.E.B. Du Bois, Standing Bear (Native American), Wong Kim Ark (Chinese American)</p>
+            <p>These figures speak from the standpoint of peoples subjected to US expansion and racism. Their voices are essential to a historically complete debate: they articulate the cost of empire to those it targets.</p>
+        </div>
+
+        <div class="camp-card">
+            <h4>Press Gallery (2 students, non-aligned)</h4>
+            <p><strong>Reporter for the New York Journal (Hearst chain):</strong> Covers the hearing from a pro-expansion, sensationalist angle.</p>
+            <p><strong>Communications Director, Anti-Imperialist League:</strong> Covers the hearing from the anti-imperialist perspective.</p>
+            <p>Press students attend both sessions, take notes, and deliver brief dispatches or opinion pieces at the end of Session 2.</p>
+        </div>
+
+        <div class="overview-text">
+            <h4 style="color: #8b0000; margin: 1.5rem 0 0.5rem 0;">Class Size Guidance</h4>
+            <p><strong>For 17–18 students:</strong> Assign all Core roles and the Strong Additions listed above. The teacher plays McKinley. This fills the class and ensures robust representation from all camps.</p>
+            <p><strong>For smaller classes:</strong> Cut optional roles (Debs, Twain, Wells, Du Bois, Standing Bear, Wong Kim Ark) and reduce press to one student. Prioritize Core roles and Camp 4 representation — the voices of colonized and racialized peoples are historically crucial.</p>
+            <p><strong>For larger classes:</strong> Add more journalists, double-up on minor roles, or invite colleagues to sit as additional committee members.</p>
+        </div>
+
+        <div class="context-box">
+            <h4>On "Direct" vs. "Contextual" Historical Evidence</h4>
+            <p>Students often ask: "Did my character actually say this about the Philippines?" The answer varies. Roosevelt and Beveridge published extensively on the subject. Gompers and Bryan made their positions clear. Aguinaldo and Grimké were direct participants in the debate. But other figures—Wells, Du Bois, Standing Bear, Wong Kim Ark—are included because their documented positions on US imperialism, racial violence, and colonial domination are directly relevant, even if they didn't testify before Congress. Both types of evidence are historically sound. Make this clear to students so they don't dismiss "contextual" roles as inauthentic.</p>
+        </div>
+
+        <div class="overview-text">
+            <h4 style="color: #8b0000; margin: 1.5rem 0 0.5rem 0;">Cross-Examination Strategy</h4>
+            <p>In Session 2, students should prepare to defend their positions under questioning. Before the hearing, each camp should anticipate challenges from opposing perspectives. What are the strongest objections to our argument? How do we answer them? What evidence do we cite? This preparation turns the hearing into genuine intellectual exchange, not theater.</p>
+        </div>
+
+    </div>
+
+    <!-- STUDENT PREP SECTION -->
+    <div id="prep" class="section">
+        <div class="header">
+            <h2>Student Preparation Guide</h2>
+        </div>
+
+        <div class="overview-text">
+            <p>Your grade depends on thorough preparation and intelligent argument. Follow these steps in order.</p>
+        </div>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">Six Steps to Prepare</h3>
+
+        <div style="background-color: #f9f9f9; padding: 1.5rem; border-radius: 4px; margin: 1.5rem 0;">
+            <p><strong>Step 1: Read the Essential Reading</strong></p>
+            <p>All students read the same foundational texts: excerpts from key speeches, editorials, and policy documents from 1898–1899. These are provided on the Essential Reading tab. Do not skip this. You cannot argue intelligently without knowing what the primary sources say.</p>
+        </div>
+
+        <div style="background-color: #f9f9f9; padding: 1.5rem; border-radius: 4px; margin: 1.5rem 0;">
+            <p><strong>Step 2: Read Your Role Guide Carefully</strong></p>
+            <p>After the general reading, go to the Role Guides tab and read your assigned character's biography, key arguments, and historical context. Understand their stakes, their values, and their evidence. You are not inventing a character; you are learning a historical figure and inhabiting their perspective.</p>
+        </div>
+
+        <div style="background-color: #f9f9f9; padding: 1.5rem; border-radius: 4px; margin: 1.5rem 0;">
+            <p><strong>Step 3: Review the Key Terms</strong></p>
+            <p>Historical terms and concepts matter. "Annex" doesn't mean the same thing to everyone in 1898. "Self-determination," "empire," "commerce," "duty"—these words carry weight and ambiguity. Familiarize yourself with the Key Terms tab so you can use language precisely in your arguments.</p>
+        </div>
+
+        <div style="background-color: #f9f9f9; padding: 1.5rem; border-radius: 4px; margin: 1.5rem 0;">
+            <p><strong>Step 4: Use the AI Prep Coach</strong></p>
+            <p>This is structured as a Senator's Inquiry on the issue of Philippines Annexation, 1898–1899.</p>
+            <p>You're going to rehearse your role for our imperialism simulation by doing a mock Senate "hearing" with an AI agent playing a senator.</p>
+
+            <p><strong>What this is for</strong></p>
+            <ul style="margin: 0.5rem 0 1rem 1.5rem;">
+                <li>To test whether you can argue in historically accurate terms from your character's point of view.</li>
+                <li>To force you to use specific evidence (events, people, policies, and short quotes) instead of vague claims.</li>
+                <li>To practice the kind of pressure you'll face in class: interruptions, follow-ups, and demands for proof.</li>
+            </ul>
+
+            <p><strong>How to do it (recommended)</strong></p>
+            <ol style="margin: 0.5rem 0 1rem 1.5rem;">
+                <li>Open your AI chat in voice mode if you can. Treat it like oral argument rehearsal. If you don't have a live chat capability don't worry. This will still work.</li>
+                <li>Have your packet and notes open beside you. You will be asked to point to where claims come from.</li>
+                <li>Paste the script below into the AI exactly.</li>
+                <li>When the Senator asks a question, answer as your character. Keep it tight: claim + reason + anchor.</li>
+                <li>If you don't know something, say so — then pivot to what you do know and ask to move on. That's better than bluffing.</li>
+            </ol>
+
+            <p><strong>Time goal:</strong> Do 10–15 minutes of questioning. When you're done, say: <em>"Stop. Give me my readiness check."</em></p>
+
+            <div style="background-color: #1a1a2e; color: #e8e8e8; font-family: monospace; font-size: 0.88rem; line-height: 1.7; padding: 1.5rem; border-radius: 4px; margin: 1.5rem 0; white-space: pre-wrap;">Script to paste into the AI (copy/paste all of this):
+
+CONTEXT (THE MOMENT IN HISTORY)
+We are in late 1898 / early 1899. The U.S. defeated Spain in the Spanish-American War. The Treaty of Paris is about to transfer the Philippines from Spain to the United States. Filipinos under Emilio Aguinaldo have declared independence. Congress must decide whether to annex and govern the Philippines, recognize independence, or pursue some "middle" arrangement.
+
+YOUR ROLE
+You (the AI) are a U.S. Senator preparing to vote. You will interview ME (the student). I will answer as my assigned character. Your job is to test whether I understand the Philippines question and can argue in historically accurate terms using evidence.
+
+MY ASSIGNED CHARACTER (I will paste one name below)
+[PASTE YOUR ROLE HERE — e.g., Theodore Roosevelt, George Frisbie Hoar, Emilio Aguinaldo, Ida B. Wells, Alfred Thayer Mahan, etc.]
+
+CRITICAL TURN-TAKING RULES (MUST FOLLOW)
+1) You are ONLY the Senator. Do NOT write my answers for me. Do NOT roleplay as my character.
+2) Ask 1–2 questions per turn, then STOP and wait for my reply.
+3) After I reply, do two things:
+   A) Give 1–3 sentences of commentary evaluating my answer (accuracy, specificity, use of evidence).
+   B) Ask your next 1–2 questions.
+4) If I am vague, press me: "Name an event, year, person, policy, or quotation."
+5) Force me to "steelman" the other side at least once (make the best opposing argument).
+6) Force me to use the packet + Foner. If I make a claim, ask where it appears: packet section, primary source, or Foner topic (tell me to use the index and headings; editions differ).
+
+WHAT "SPECIFIC EVIDENCE" MEANS (YOU MUST DEMAND THIS LEVEL)
+When I make claims, push me to anchor them in something concrete, like:
+• A named event: Treaty of Paris; Battle of Manila Bay; annexation of Hawai'i; etc.
+• A named idea: Open Door; white man's burden; yellow journalism; jingoism; strenuous life; closing of the frontier
+• A named figure: Aguinaldo; McKinley; Mahan; Beveridge; Twain; Wells; Du Bois; Gompers; Debs; Hoar
+• A named policy or law: Platt Amendment (Cuba); Guano Islands Act (1856); etc.
+• A paraphrase of a primary source assigned to my role OR a short quote (1–2 lines) with context (who said it, and why).
+
+ROLE PERFORMANCE RULES (SO I DON'T SOUND MODERN)
+Push me to:
+• Speak in 1898 language and assumptions (not 2026 moral vocabulary).
+• Identify my character's motives (strategy, markets, religion, race, labor, constitutional principle).
+• Admit contradictions when they exist (some anti-imperialists are racist; some imperialists claim humanitarian motives; etc.).
+
+THE SENATOR'S QUESTION ROUTE (DO NOT DO ALL AT ONCE)
+Use 1–2 questions per turn and move through these areas over time:
+
+ROUND 1 — BASICS
+• What is the decision Congress faces?
+• What did the Treaty of Paris do?
+• What did Filipinos expect after Spain?
+
+ROUND 2 — WHY EMPIRE?
+• One strategic argument (Mahan/Roosevelt).
+• One economic/market argument (Beveridge/Page/Denby).
+• One missionary/civilizing argument (Strong).
+Follow-up: Which is the real driver, and which is the public justification?
+
+ROUND 3 — WHY OPPOSE EMPIRE?
+• Two anti-imperialist arguments grounded in republican principle (Hoar/Carnegie/James/Twain/Bryan).
+• Identify at least one "contradiction" motive (e.g., Tillman or labor/race anxieties).
+Follow-up: Why do those contradictions matter?
+
+ROUND 4 — PRECURSORS AND CONTINUITY
+• How do the Indian Wars and reservations relate to overseas empire?
+• What does Hawai'i show about sovereignty and markets?
+• What do yellow journalism and jingoism do to democratic decision-making?
+• How does Turner's "closing frontier" logic feed imperial ambition?
+• (Optional) Chicago World's Columbian Exposition (1893) and imperial spectacle
+
+ROUND 5 — FILIPINO AGENCY AND RESISTANCE
+• What is Aguinaldo's core claim?
+• What happens if Filipinos resist U.S. rule?
+• How would your character justify or condemn the use of force?
+
+ROUND 6 — STEELMAN (REQUIRED)
+• Now argue the best case for the other side.
+• Then return to your side and explain what you think the other side misses.
+
+ENDGAME — READINESS CHECK
+After ~10–15 minutes of questioning (or when I say "stop"), you must deliver:
+• A readiness rating: Ready / Almost Ready / Not Ready Yet
+• Three specific action steps tied to what I missed (e.g., "learn Treaty of Paris terms," "pull 2 quotes from your role source," "review Hawai'i chronology," etc.)
+
+START (YOUR VERY LAST LINE SHOULD BE:)
+Senator, I have my packet and Foner open. Please begin with your first question(s).</div>
+        </div>
+
+        <div style="background-color: #f9f9f9; padding: 1.5rem; border-radius: 4px; margin: 1.5rem 0;">
+            <p><strong>Step 5: Preparatory Assignments (Homework)</strong></p>
+            <p>See Hub for the preparatory assignments.</p>
+        </div>
+
+        <div style="background-color: #f9f9f9; padding: 1.5rem; border-radius: 4px; margin: 1.5rem 0;">
+            <p><strong>Step 6: Prepare Notes for the Simulation</strong></p>
+            <p>Bring handwritten or typed notes to Session 1. Include key arguments, evidence citations, and anticipated objections. You may consult these notes during the simulation. Clearly label any ideas that are AI-assisted so you get appropriate credit.</p>
+        </div>
+
+        <div class="warning-box">
+            <h4>Graded Work Product Expectations</h4>
+            <p>Your teacher will grade you on: (1) the quality and depth of your preparation; (2) the clarity and evidence-based reasoning of your arguments in Session 1; (3) your defense against cross-examination in Session 2; (4) your written reflection after the hearing. Memorization is not required. Thoughtful, evidence-backed argument is.</p>
+        </div>
+
+    </div>
+
+    <!-- ROLE GUIDES SECTION -->
+    <div id="roles" class="section">
+        <div class="header"><h2>Character Role Guides</h2></div>
+        <p style="margin-bottom:20px;"><em>Each guide gives you a bio, your position in the debate, and questions to anticipate. Read Key Terms and the Essential Reading alongside this guide.</em></p>
+
+        <h3>Camp 1: Expansionists / Imperialists — Power, Markets, Mission</h3>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Theodore Roosevelt — Nationalist and Strenuous Imperialist</h4><div class="camp-tag">Camp 1 · Expansionist</div></div>
+            <p><strong>Who you are:</strong> In late 1898 and early 1899, you stand at a pivotal moment in your political career and in American history. You are not yet president. You have just returned from Cuba as the most famous volunteer officer of the Spanish-American War, having resigned your position as Assistant Secretary of the Navy to lead the 1st U.S. Volunteer Cavalry — the "Rough Riders." Your wartime fame has propelled you into national prominence, and you have just been elected governor of New York. You speak with the confidence of a man who believes history has vindicated you.</p>
+
+            <p>Your support for annexing the Philippines grows out of a coherent worldview shaped well before 1898. As Assistant Secretary of the Navy in 1897–1898, you pushed aggressively for American naval preparedness and welcomed confrontation with Spain. You believe modern great powers require strong fleets, overseas bases, and a global presence. Influenced by naval strategist Alfred Thayer Mahan, you see sea power as the foundation of national greatness. Victory over Spain, in your view, was not simply a short war; it marked the United States' arrival as a world power.</p>
+
+            <p>For you, the Philippines are not an accidental prize. They represent strategic position and national responsibility. Situated in the Pacific near China, the islands offer the United States a foothold in Asia and an opportunity to shape global commerce and diplomacy. To withdraw after defeating Spain would signal weakness. Other imperial powers — Germany, Japan, or Britain — might step in.</p>
+
+            <p>But your argument is not only strategic; it is moral, though in a distinctly imperial sense. In your 1899 speech "The Strenuous Life," you insisted that national greatness requires energy, courage, and the willingness to shoulder burdens. Nations that choose comfort over responsibility decline. You frame expansion not as greed but as duty.</p>
+
+            <p>When Emilio Aguinaldo declares Philippine independence in June 1898, you do not accept that declaration as decisive. You do not believe the islands are prepared for stable self-government. American rule is a temporary guardianship designed to establish order, law, and administrative stability before any genuine self-rule could occur. This position rests on assumptions common among late nineteenth-century imperialists: that Anglo-American political institutions represented a higher stage of development.</p>
+
+            <p>You also frame the question in terms of national honor. The Treaty of Paris transfers sovereignty from Spain to the United States. To refuse responsibility after victory would betray both the soldiers who fought and the global position the war created. Expansion is consistent with American history. The United States has always grown; it has never retreated from opportunity.</p>
+
+            <p>Yet your position carries tensions opponents will expose. The United States was founded on a rejection of colonial rule. Anti-imperialists argue that governing the Philippines without consent violates core republican principles. You do not deny that force may be necessary; you believe order sometimes requires it. But you resist the charge that imperial governance contradicts American ideals. Liberty requires structure. Civilization requires enforcement.</p>
+
+            <p>You speak with urgency and confidence. You dismiss sentimental or timid objections. You believe history favors nations willing to act boldly. In this debate, you will ask whether the United States intends to behave like a great power or retreat into provincial hesitation.</p>
+
+            <div class="quote-box">"We cannot sit huddled within our own borders... merely an assemblage of well-to-do hucksters who care nothing for what happens beyond." <div class="attribution">— Roosevelt, "The Strenuous Life," 1899</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> consequences of withdrawal and power vacuums; whether honor requires permanent commitment; how "temporary guardianship" squares with armed suppression</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Alfred Thayer Mahan — Naval Strategist</h4><div class="camp-tag">Camp 1 · Expansionist</div></div>
+            <p><strong>Who you are:</strong> By the late 1890s, you have become the single most influential American theorist of global power. A career naval officer and historian, you argue that modern greatness rests on control of the seas: a strong battle fleet, a large merchant marine, and a network of ports and coaling stations that can keep ships supplied across vast distances. In 1890 you published The Influence of Sea Power Upon History, the book that gave U.S. expansionists a strategic vocabulary that sounds less like land-grabbing and more like hard-headed necessity.</p>
+
+            <p>Your relevance to the Philippines debate is structural: you treat the islands not primarily as a "people" problem but as a geography problem. The United States, having reached the Pacific coast and become deeply enmeshed in overseas trade, now faces the question of whether it will remain strategically vulnerable or build the infrastructure of a world power. In your frame, the Philippines — along with Hawaii, Guam, and other Pacific nodes — function as bases that make long-range naval operations possible and protect commercial routes. A navy, in your view, is the armed architecture of commerce.</p>
+
+            <p>In this debate, you are the character who keeps dragging the room away from moral abstractions and back to logistics: coal, distance, chokepoints, rival empires, and the vulnerability of shipping lanes. You are also useful for showing how "imperialism" can arrive wearing the mask of neutral expertise. You do not have to sound bloodthirsty to be consequential; you only have to sound inevitable.</p>
+
+            <div class="quote-box">"Colonies... afford... the surest means of supporting abroad the sea power of a country." <div class="attribution">— Mahan, The Influence of Sea Power upon History, 1890</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> whether trade and security require permanent territorial control; alternatives to bases (treaties, alliances); whether strategic logic can justify ruling 8 million people without consent</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Albert J. Beveridge — Senator, Empire Evangelist</h4><div class="camp-tag">Camp 1 · Expansionist</div></div>
+            <p><strong>Who you are:</strong> You enter the Philippine controversy as a rising political star who speaks imperial confidence in the idiom of providence and national destiny. Before you ever held federal office, you gained national attention as an orator defending a stronger federal state and urging overseas expansion. In September 1898 — right as Americans were deciding what victory over Spain should mean — you delivered your famous "March of the Flag" speech, a campaign address that openly celebrated an "imperialist policy" and argued that the United States should keep what it had taken.</p>
+
+            <p>Your power is rhetorical and moralized. You do not present expansion as a reluctant burden. You present it as a duty and an opportunity: the U.S. flag "marches" because history moves, because power moves, and because — in your telling — God and progress move with it. That matters because it shows how imperialism can be sold as idealism — how conquest can be reframed as uplift, and how domination can be narrated as stewardship.</p>
+
+            <p>You became a U.S. senator from Indiana in 1899, aligning yourself with the new national politics that paired overseas power with domestic reform. You support progressive legislation associated with Theodore Roosevelt even while normalizing the idea that the United States should be a permanent territorial power abroad. You are a clean example of how "modernization" and "empire" could feel like parts of one forward-looking package.</p>
+
+            <div class="quote-box">"The Philippines are ours forever... China's... markets... are the mightiest commercial fact in our history." <div class="attribution">— Beveridge, Senate speech, 1900</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> the long-term cost of governing by force; whether destiny language masks economic interest; how "modernization" and "empire" are distinguishable</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Josiah Strong — Protestant Minister, Anglo-Saxonist</h4><div class="camp-tag">Camp 1 · Expansionist</div></div>
+            <p><strong>Who you are:</strong> You represent the religious-intellectual engine behind late-nineteenth-century expansionism: the belief that American power could — and should — be interpreted as a mandate. A Congregational minister and leading voice in Social Gospel-era public life, you became famous for Our Country: Its Possible Future and Its Present Crisis (1885), a work that blended anxiety about social change with confidence about Anglo-American world leadership.</p>
+
+            <p>Your "Philippines" relevance is less about specific policy details than about a governing story: the idea that U.S. expansion is fundamentally benevolent because it carries Christianity, "civilization," and "order." In your worldview, nonwhite and non-Protestant peoples are not approached as political equals with legitimate sovereignty; they are approached as objects of mission and reform. Your writing is a window into how race thinking and religious certainty could fuse into what looked, to many contemporaries, like moral seriousness rather than prejudice.</p>
+
+            <p>In this simulation, you are crucial because you make explicit what many politicians imply: imperial power needs a justification that reaches deeper than profit. Your voice lets students hear how a "civilizing mission" works as ideology — how it turns unequal power into a story of responsibility, and how it can make coercion feel like care.</p>
+
+            <div class="quote-box">"Historical tendencies are the mighty alphabet with which God writes his prophecies." <div class="attribution">— Strong, "Anglo-Saxon Predominance," 1891</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> the difference between humanitarian aid and imperial control; whether "consent of the governed" applies universally; how "care" and "coercion" become indistinguishable</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Charles Denby — U.S. Diplomat in China</h4><div class="camp-tag">Camp 1 · Expansionist</div></div>
+            <p><strong>Who you are:</strong> You served as U.S. envoy to China from 1885 until mid-1898 — an unusually long tenure that placed you at the center of U.S. dealings with an Asian empire under intense pressure from multiple Western powers. Your career matters for the Philippines question because it ties U.S. expansion directly to the politics of Asia: trade access, the protection of American interests abroad, and the reality that European empires were already carving influence through ports, concessions, and unequal relationships.</p>
+
+            <p>Your "imperialist" plausibility comes from pragmatism rather than crusade. Someone who has spent years negotiating in East Asia is primed to see the world as a competitive arena where moral intentions don't prevent strategic losses. The Philippines, in your register, look like leverage: a presence in the western Pacific, a way to project power, and a bargaining chip in a region where the United States feared being sidelined.</p>
+
+            <p>At the same time, your background invites students to ask a harder question: when Americans speak of "opening" Asia, whose doors are being forced, and who benefits? You can be portrayed as someone whose lived professional reality makes imperial competition seem normal — and therefore makes empire easier to rationalize.</p>
+
+            <div class="quote-box">"Asia is... the last prize to conquer for the commerce of the West. The great barrier has become a highway." <div class="attribution">— Denby, "America's Opportunity in Asia," 1898</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> whether commercial access requires territorial possession; the risk of provoking rival empires; whose doors are being forced when Americans speak of "opening" Asia</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>John T. Morgan — Senator, Expansionist</h4><div class="camp-tag">Camp 1 · Expansionist</div></div>
+            <p><strong>Who you are:</strong> You are a long-serving Democratic senator from Alabama. You have served in the U.S. Senate from 1877 and chair powerful committees including Foreign Relations and Interoceanic Canals. You are a major advocate of an interoceanic canal (favoring a Nicaragua route) and have argued for a larger U.S. global footprint during the country's turn toward imperial expansion.</p>
+
+            <p>You are especially valuable in this debate because you make the "empire" discussion impossible to separate from race. You are remembered as an architect of expansionist foreign policy and also a prominent defender of white supremacy in the early Jim Crow period. Your worldview tends to treat political equality as something that has to be rationed and policed — at home and, by implication, abroad. For you, annexation is not just about strategy or markets; it is about controlling who belongs, who rules, and whose rights are negotiable.</p>
+
+            <p>You can argue "big" geopolitical ideas — canals, trade routes, American strength — while also revealing the political price of empire: it invites the United States to govern nonwhite populations without democratic consent, and it gives domestic racial hierarchies a global stage. Students quickly see that for some expansionists, "civilization" talk and racial control talk are not separate languages; they are the same language used in different rooms.</p>
+
+            <div class="quote-box">"Proper and necessary military reservations and coaling stations in the Pacific are essential to commerce and national security." <div class="attribution">— Morgan, Senate speech</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> the line between strategic foothold and full annexation; how your domestic racial politics shape your foreign policy; whether "civilization" language masks racial control</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Walter Hines Page — Editor, Public Opinion Shaper</h4><div class="camp-tag">Camp 1 · Expansionist</div></div>
+            <p><strong>Who you are:</strong> You are not primarily a Philippines policymaker; you are a shaper of elite American public opinion at the exact moment the country is redefining itself. You rose from Southern journalism into national prominence, becoming editor of major magazines including The Atlantic Monthly. That media position matters because 1898–1899 is an argument not only in Congress but in print: newspapers and magazines help decide what counts as "patriotism," what counts as "treason," and what the public thinks the war was for.</p>
+
+            <p>You represent a strain of establishment reform thought that combines optimism about American capacity with a desire for national unity and international prestige. Your later appointment as ambassador to Great Britain underscores that contemporaries view you as a serious national voice, not merely a commentator.</p>
+
+            <p>You work best as a bridge figure: you believe the United States is growing into global responsibilities and cannot think only domestically anymore, but you are also sensitive to reputational costs, governance burdens, and the risk that imperial habits could corrode democratic culture. You let students explore how empire could be normalized through respectable, educated, "public affairs" language rather than through raw militarism.</p>
+
+            <p><strong>Prepare for challenges on:</strong> how "public affairs" language normalizes empire; whether media shapes or reflects public opinion on expansion; the risk that imperial habits corrode democratic culture</p>
+        </div>
+
+        <h3>Camp 2: Anti-Imperialists — A Republic Cannot Rule Subjects</h3>
+
+        <div class="role-card">
+            <div class="role-header"><h4>George Frisbie Hoar — Senator, Constitutional Anti-Imperialist</h4><div class="camp-tag">Camp 2 · Anti-Imperialist</div></div>
+            <p><strong>Who you are:</strong> You are a Massachusetts Republican senator who stands for a constitutional and institutional critique of empire. You are a leading organizer of the Republican Party and a lifelong crusader for good government — an identity that matters because anti-imperialism, for you, is not simply emotion or sympathy; it is a claim about what kind of state the United States is allowed to be.</p>
+
+            <p>Your anti-imperialism is rooted in a fear that annexation without genuine consent turns a republic into something else: a power that rules subjects rather than citizens. That concern becomes sharper when the legal machinery of empire is made explicit. The Treaty of Peace with Spain left the "civil rights and political status" of people in ceded territories to be determined by Congress — language that sounds administrative but effectively signals that millions of lives will be governed without the guarantees Americans assume at home. Your contribution to the debate is to insist that this is not a technicality; it is the core of the problem.</p>
+
+            <p>If you play this role well, you do not sound naive about violence or geopolitics. You sound alarmed about institutional habits: once a nation builds the tools of overseas rule, those tools do not stay politely offshore. They reshape the meaning of citizenship, the reach of executive power, and the moral grammar of "liberty" itself.</p>
+
+            <div class="quote-box">"You have no right at the cannon's mouth to impose on an unwilling people your Declaration of Independence and your Constitution." <div class="attribution">— Hoar, Senate speech, January 1899</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> whether constitutional principle alone is sufficient when rivals threaten to fill a power vacuum; the Indian Wars precedent — did anti-imperialists oppose Native dispossession?</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Andrew Carnegie — Industrialist, Anti-Imperialist</h4><div class="camp-tag">Camp 2 · Anti-Imperialist</div></div>
+            <p><strong>Who you are:</strong> You are a Scottish-born steel magnate turned world-famous philanthropist — and your presence in the anti-imperialist camp complicates stereotypes: a titan of capital can still argue that empire is a betrayal of national principle.</p>
+
+            <p>Your anti-imperialism is not quiet. In 1899 you published "Americanism versus Imperialism," insisting that the United States should not trade republican identity for colonial possessions. You also became famous for offering $20 million — matching the amount associated with the Philippine cession — to President McKinley as a way to finance Philippine independence rather than annexation. That gesture dramatizes your claim that empire is not "necessary"; it is a choice.</p>
+
+            <p>In this simulation, you should sound like someone defending a brand: "America" as a moral and political idea with global prestige precisely because it is not an old-world empire. You can argue that imperial rule will force the United States to maintain large armies, tolerate brutality, and govern by coercion — costs that outweigh any commercial advantage. Your voice also raises an uncomfortable but important question: when an industrialist opposes empire, is it pure principle, strategic calculation, fear of instability, or all of the above?</p>
+
+            <div class="quote-box">"Is the Republic... to abandon her political creed... [and] establish... the rule of the foreigner over subject peoples?" <div class="attribution">— Carnegie, "Distant Possessions," 1898</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> whether trade without conquest is realistic in a world of imperial competition; why an industrialist opposes expansion; whether your opposition is principled or self-interested</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>William James — Philosopher, Moral Anti-Imperialist</h4><div class="camp-tag">Camp 2 · Anti-Imperialist</div></div>
+            <p><strong>Who you are:</strong> You enter the Philippines question as America's most influential living philosopher and as a public moral critic of imperial war. You do not argue like a politician. You argue like someone asking what imperialism does to the inner life of a democracy: how it trains citizens to accept domination, how it changes what they can justify to themselves, and how it hardens cruelty into routine.</p>
+
+            <p>Your anti-imperialist writing and speaking are not abstract. You participate in the New England Anti-Imperialist League — you are not merely commenting from a study; you are participating in organized political resistance that tries to keep the public's moral imagination awake after the rush of wartime celebration.</p>
+
+            <p>For students, you are an invitation to widen the debate. Instead of arguing only "Do we have the right?" or "Can we afford it?" you push "What kind of people will we become if we do this?" You are especially effective when paired with expansionists who talk about destiny or efficiency. You can answer: destiny is not an excuse, and efficiency is not innocence.</p>
+
+            <div class="quote-box">"We are crushing out the attempt of a people long enslaved to attain their rightful possession of themselves." <div class="attribution">— James, "The Philippines Tangle," 1899</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> whether moral arguments can compete with strategic and economic ones; the gap between principle and policy; what you propose concretely</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Mark Twain — Satirist, Anti-Imperialist Critic</h4><div class="camp-tag">Camp 2 · Anti-Imperialist</div></div>
+            <p><strong>Who you are:</strong> You — Samuel Clemens — bring literary celebrity and moral mockery to the anti-imperialist camp. You are not a niche pamphleteer but one of the best-known American writers, author of Tom Sawyer and Huckleberry Finn, with an audience large enough to make your political disgust culturally meaningful.</p>
+
+            <p>Your anti-imperialism matters because it is aimed at hypocrisy: the gap between the republic's self-description and the violence it practices. You are among the best-known members of the Anti-Imperialist League. Your intervention helps shore up the league's public platform. This is a different kind of power than a senator's vote. You do not legislate; you delegitimize. You make certain rationalizations harder to say out loud without sounding like a villain in one of your own stories.</p>
+
+            <p>In this simulation, your voice should be sharp, impatient, and suspicious of sanctimony. If expansionists claim they are spreading civilization, you are the one who asks: "If we are so civilized, why do we need guns and censorship and burned villages to prove it?" Your contribution is not only argument but tone — moral sarcasm as political weapon.</p>
+
+            <div class="quote-box">"I am an anti-imperialist. I am opposed to having the eagle put its talons on any other land." <div class="attribution">— Twain, 1900</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> whether satire changes policy or just entertains; what concrete alternative you propose; the limits of ridicule as political strategy</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>William Jennings Bryan — Populist Democrat</h4><div class="camp-tag">Camp 2 · Anti-Imperialist</div></div>
+            <p><strong>Who you are:</strong> You are the anti-imperialist who treats the issue as a mass-democracy question rather than an elite constitutional puzzle. You are a Democratic and Populist leader, a magnetic orator, and a three-time presidential nominee (1896, 1900, 1908). That electoral history matters because it places anti-imperialism inside party politics and popular campaigning, not just inside salons and senate committees.</p>
+
+            <p>In 1900, you help make imperialism a central theme of your national campaign against William McKinley. You choose anti-imperialism as the "paramount issue" to unify factions and attract disaffected Republicans, attacking the annexation of the Philippines as a betrayal of America's anti-colonial origins.</p>
+
+            <p>For students, you are useful because you can sound morally passionate without sounding aristocratic. You speak the language of democracy versus plutocracy, of ordinary people versus entrenched power. In a Philippines debate, you can connect empire to domestic inequality: large armies, distant wars, and colonial administration become instruments of the same interests that exploit labor and farmers at home. You help students see that the anti-imperialist coalition was politically diverse — and sometimes strategically ambitious.</p>
+
+            <div class="quote-box">"If war is to be waged for trade, how much trade ought to be demanded in exchange for a human life?" <div class="attribution">— Bryan, "Will It Pay?" 1899</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> the tension between opposing annexation and voting for the treaty; whether "Will It Pay?" ignores moral dimensions; whether populist rhetoric can translate into foreign policy</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Benjamin R. Tillman — Senator (Contradiction Role)</h4><div class="camp-tag">Camp 2 · Anti-Imperialist (White Supremacist Grounds)</div></div>
+            <p><strong>Who you are:</strong> You are the character who forces students to confront an uncomfortable truth: opposition to overseas empire was not always grounded in egalitarian ethics. You are a populist South Carolina politician who championed agrarian reform and white supremacy — an unabashed racist associated with the terrorist white-supremacist Red Shirts.</p>
+
+            <p>You do speak against the U.S. war in the Philippines and against the logic of conquest, including in a Senate speech delivered in February 1899, in which you warn against spreading religion by force and question the legitimacy of ruling another people through violence. This is powerful classroom material: the same speaker who insists on white domination at home can still denounce imperial brutality abroad.</p>
+
+            <p>The point is not to rehabilitate you. The point is political analysis. Your anti-imperialist posture is intertwined with fears about incorporating nonwhite colonial subjects into the American polity — an anxiety that aligns with your broader segregationist worldview. You can oppose empire not because you honor Filipino self-determination, but because empire threatens the racial boundaries you want to harden. Students who play you should make that contradiction visible: what looks like "anti-imperialism" can still be a defense of racial hierarchy.</p>
+
+            <div class="quote-box">"How many more victims are we to offer up?... The commercial instinct... is pressing this country madly onward." <div class="attribution">— Tillman, Senate speech, February 1899</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> the racist foundations of your anti-imperialism; whether opposing empire for the wrong reasons undermines the cause; what your position reveals about the anti-imperialist coalition</p>
+
+            <div class="warning-box"><h4>Teacher Note:</h4> <p>Tillman is historically important precisely because his anti-imperialism is rooted in white supremacy, not principle. Use this role to expose how racism pervaded both sides of the debate. This figure should not be assigned to a student without framing and support.</p></div>
+        </div>
+
+        <h3>Camp 3: Labor and Socialist Critics — Empire as a Weapon of Capital</h3>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Samuel Gompers — AFL Labor Leader</h4><div class="camp-tag">Camp 3 · Labor Critic</div></div>
+            <p><strong>Who you are:</strong> You are president of the American Federation of Labor. You represent a labor movement that can criticize imperialism from the standpoint of working-class costs and democratic danger. In October 1898 — while victory celebrations were still fresh — you delivered a speech titled "Imperialism—Its Dangers and Wrongs," arguing that becoming "a nation of conquerors" would be a crime against the republic's own traditions and obligations to its people.</p>
+
+            <p>Your opposition does not rely on philosophical pacifism. You can argue that empire strengthens the coercive side of the state: standing armies, militarized policing habits, the suppression of dissent, and a politics of distraction in which foreign adventure substitutes for domestic justice. At the same time, labor critiques in this era often carry their own exclusions — especially around immigration and race — which is part of what makes you historically honest rather than morally tidy.</p>
+
+            <p>In this simulation, you are best used to shift the question from "Is empire glorious?" to "Who pays?" You can ask why working people should fund distant administration and wars, and whether elites will use patriotic spectacle to weaken unions and silence criticism. You bring the Philippines debate back to class power at home.</p>
+
+            <div class="quote-box">"A 'foreign war as a cure for domestic discontent' has been the device of tyrants throughout the ages." <div class="attribution">— Gompers, "Imperialism—Its Dangers and Wrongs," 1898</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> whether labor opposition to empire is about solidarity or racial exclusion; who benefits from your "cheap labor" argument; whether opposing empire for economic reasons is principled</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Eugene V. Debs — Socialist Organizer (Optional)</h4><div class="camp-tag">Camp 3 · Socialist Critic</div></div>
+            <p><strong>Who you are:</strong> You bring a more radical critique: imperialism as capitalism in uniform. You became a socialist in 1897, after years as a prominent labor leader, and you go on to lead the Socialist Party and become the most recognizable socialist politician in the United States. Even if you are not always a front-line figure in the earliest Philippines debates, your politics are already in place by 1898–1899: class conflict is the engine; the state often serves property; war frequently follows the needs of markets and investment.</p>
+
+            <p>Your value for students is analytical clarity. Where a Beveridge can make empire sound like poetry and a Mahan can make it sound like logistics, you can make it sound like political economy. You can argue that "uplift" language is ideological cover for securing trade routes, labor supplies, and profitable footholds. You can also connect imperial policy to domestic repression: the same government willing to rule Filipinos without consent is often willing to crush strikes, surveil radicals, and treat working-class dissent as a threat to national security.</p>
+
+            <p>Played well, you help students see that the anti-imperialist argument is not only humanitarian or constitutional. It can also be a theory of how modern power reproduces itself — abroad and at home — through institutions that claim to be neutral while protecting specific interests.</p>
+
+            <p><strong>Prepare for challenges on:</strong> whether socialist critique offers a workable policy alternative or just opposition; the tension between international solidarity and domestic labor protectionism; whether class analysis explains everything</p>
+        </div>
+
+        <h3>Camp 4: Colonized and Racial Justice Voices — Self-Determination and the Color Line</h3>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Emilio Aguinaldo — Filipino Revolutionary Leader</h4><div class="camp-tag">Camp 4 · Filipino Independence</div></div>
+            <p><strong>Who you are:</strong> You are not a "stakeholder" in an American debate; you are the leader of a revolution whose fate Americans are presuming to decide. You fought against Spain and then against the United States. When Philippine independence was declared in 1898, you became president; within months Spain signed a treaty ceding the islands to the U.S., and your forces fought U.S. troops until you were captured in 1901.</p>
+
+            <p>Your presence changes the simulation's moral geometry. Expansionists often speak as if the Philippines were a prize or a responsibility accidentally dropped into American hands. You force the question: responsibility to whom? You represent an organized political movement that understood itself as sovereign, revolutionary, and entitled to international recognition. In your frame, the core issue is not whether Americans will govern well; it is whether Americans have any right to govern at all.</p>
+
+            <p>Your story is not simply "resistance." It is state-building under crushing conditions: diplomacy, legitimacy, military strategy, and the attempt to convert anti-Spanish revolution into recognized independence — only to confront a new imperial power speaking the language of liberation while enforcing rule by arms.</p>
+
+            <div class="quote-box">"Give us the chance; treat us exactly as you demanded to be treated by Great Britain." <div class="attribution">— Aguinaldo, "Case Against the U.S.," 1899</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> whether the Malolos Republic could survive without great-power protection; internal divisions within Filipino independence movement; why Americans should trust Filipino self-governance</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Archibald Grimké — Black Activist, Exposing Imperial Hypocrisy</h4><div class="camp-tag">Camp 4 · Racial Justice</div></div>
+            <p><strong>Who you are:</strong> You bring a transatlantic and hemispheric lens to American power — shaped by slavery, Reconstruction, and diplomacy. You graduated from Harvard Law School in 1874 and became a respected Boston attorney and a leader in Black civil rights organizing, including significant work with the NAACP. Crucially, you served as American consul to Santo Domingo (Dominican Republic) under President Cleveland.</p>
+
+            <p>That diplomatic service matters because it positions you to see how U.S. influence operates in practice around nonwhite nations: through unequal treaties, economic pressure, and "protectorate" logics that claim to stabilize while subordinating. You are also positioned — by personal history — to treat American moral self-congratulation with suspicion. The same republic that speaks loudly of freedom has tolerated racial terror and exclusion at home; why should colonized peoples trust its promises abroad?</p>
+
+            <p>Your voice helps students connect imperialism to the global color line: not as metaphor but as governance. You can press a question that destabilizes the expansionist "uplift" story: if Black Americans remain denied full protection and equal citizenship, what does it mean for the United States to claim it is exporting liberty?</p>
+
+            <div class="quote-box">"[A nation that] prates loudly of democracy and humanity... while it looks on contentedly at... iniquities at home has no moral authority abroad." <div class="attribution">— Grimké, addressing McKinley</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> whether exposing hypocrisy constitutes a policy alternative; what concrete outcome you want for Filipinos; how diplomatic experience shapes your view of empire</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Ida B. Wells-Barnett — Anti-Lynching Journalist</h4><div class="camp-tag">Camp 4 · Racial Justice</div></div>
+            <p><strong>Who you are:</strong> You are indispensable for cutting through the rhetoric of benevolent empire. Known as an anti-lynching crusader and investigative journalist, you built your public life around documenting racial violence and exposing how "law and order" language was used to justify terror. Your core relevance to the Philippines is not that you were writing policy memos about Manila; it is that you had already mapped the machinery of racial domination inside the United States — how mobs, courts, and the press can cooperate to make brutality seem normal.</p>
+
+            <p>Your presence forces a moral comparison that expansionists often try to avoid: a nation that cannot or will not protect Black citizens from lynching is in a weak position to claim it is taking colonies for humanitarian reasons. You also help students see how propaganda works. In your anti-lynching work, you confronted sensational narratives designed to rationalize violence; in an imperial debate, you would recognize similar narrative patterns — stories that cast the oppressed as childlike, savage, or incapable of self-rule to make domination feel reasonable.</p>
+
+            <p>You can be framed as a truth-teller about American innocence. You push the debate away from abstract national "destiny" and toward the concrete record of who receives rights, who receives violence, and how the state decides the difference.</p>
+
+            <p><strong>Prepare for challenges on:</strong> the connection between domestic racial violence and overseas empire; what you propose for the Philippines specifically; whether the anti-lynching framework applies to foreign policy</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>W.E.B. Du Bois — Young Scholar, Color Line Analyst</h4><div class="camp-tag">Camp 4 · Racial Justice</div></div>
+            <p><strong>Who you are:</strong> In 1898–1900, you are emerging as the most formidable scholar-activist of race in the United States — exactly the kind of thinker who can connect empire abroad to caste at home. You are the first Black person to receive a Ph.D. from Harvard University (1895). You have already built a profile as a rigorous researcher and public intellectual, treating racism not only as prejudice but as a system.</p>
+
+            <p>Your usefulness lies in how you frame power. You insist that modern domination is often bureaucratic, legal, and "rational" — not merely hateful. Your empirical approach (for example, in The Philadelphia Negro) is a model for treating social inequality as something produced and maintained by institutions. That same lens can be turned outward: colonial rule is not an accident of war; it is an institution-building project that classifies peoples, assigns them political status, and governs them through managed inequality.</p>
+
+            <p>You are the character who refuses compartmentalization. You will not let Americans say, "Race is a domestic problem but empire is foreign policy." You treat both as variations on the same question: who is entitled to self-rule, and what stories does power tell to deny it?</p>
+
+            <p><strong>Prepare for challenges on:</strong> whether the "color line" framework is too abstract for policy debate; what concrete steps dismantle imperial racism; whether institutional analysis offers an alternative or just critique</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Standing Bear (Ma-chu-nah-zah) — Ponca Leader, Witness to Empire at Home</h4><div class="camp-tag">Camp 4 · Indigenous Perspective</div></div>
+            <p><strong>Who you are:</strong> You are a Ponca leader who represents the deep continuity between U.S. continental expansion and overseas empire: both involve dispossession followed by arguments about "guardianship" and "civilization." Your people, the Ponca, were removed from their homelands in Nebraska in 1877 to Indian Territory (present-day Oklahoma), where catastrophic conditions led to mass death, including your son.</p>
+
+            <p>You are best remembered for Standing Bear v. Crook (1879), a landmark federal court case arising from your effort to return home and bury your son. The case affirmed that an Indian is a "person" under U.S. law and therefore can seek a writ of habeas corpus when unlawfully restrained.</p>
+
+            <p>In this simulation, your role is to puncture the myth that empire is a new temptation invented in 1898. You can argue: the United States already has experience ruling conquered peoples as wards rather than citizens — through removal, reservation policy, and the legal narrowing of personhood and rights. Your presence invites students to see the Philippines not as an "exception" but as an extension of an older American pattern: expansion, control, and moral rationalization after the fact.</p>
+
+            <div class="quote-box">"My hand is not the color of yours, but if I pierce it I shall feel pain. If you pierce your hand, you also feel pain. The blood that will flow from mine will be the same color as yours. I am a man." <div class="attribution">— Standing Bear, 1879</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> whether the Indian Wars analogy proves too much — if the precedent is already set, can it be reversed?; the gap between moral witness and policy proposal; whether your experience strengthens anti-imperialist argument or merely complicates it</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Wong Kim Ark — Chinese American, Birthright Citizen</h4><div class="camp-tag">Camp 4 · Citizenship and the Color Line</div></div>
+            <p><strong>Who you are:</strong> You anchor the Philippines debate in a parallel struggle over citizenship and belonging at home. Your name is attached to United States v. Wong Kim Ark (1898), the Supreme Court decision that affirmed birthright citizenship under the Fourteenth Amendment for a person born in the United States to Chinese parents. The government attempted to deny you reentry after travel abroad, arguing you were not a citizen; the Court rejected that claim.</p>
+
+            <p>This matters for an imperialism simulation because the U.S. acquisition of overseas territories raises the same underlying question in a different form: who counts as "American," and what does citizenship actually protect? Your case emerges from the era of Chinese exclusion and intense legal fights over the meaning of national membership. If the republic is expanding while also restricting and racializing citizenship, students can see the tension: empire magnifies the pressure to create hierarchies of status — citizen, subject, alien, ward — each with different rights.</p>
+
+            <p>You are not a speechifying ideologue; you are a living legal turning point. You represent the fact that the United States was simultaneously proclaiming itself a global force for "civilization" and litigating whether people of Asian descent could fully belong within the nation's constitutional promises. Your presence keeps the debate honest: expansion abroad is inseparable from the racial and legal architecture of the nation-state at home. This is a contextual role: you did not speak publicly about the Philippines, but your legal case and the Chinese American experience are directly relevant to the annexation debate.</p>
+
+            <div class="quote-box">"We claim the right to be treated as men, not as a degraded race unfit for political and civil privileges. We are American citizens." <div class="attribution">— Chinese Equal Rights League petition, 1892</div></div>
+
+            <p><strong>Prepare for challenges on:</strong> whether a citizenship case can speak to foreign territorial governance; the gap between legal rights and political power; what the contradiction between expansion and exclusion reveals</p>
+
+            <p><strong>Fair game for research:</strong> <em>United States v. Wong Kim Ark</em> (1898), Chinese Exclusion Act (1882), Chinese Equal Rights League (founded 1892), Geary Act (1892). The Insular Cases (1901–1922) are the legal sequel — they answer the question your character is posing.</p>
+        </div>
+
+        <h3>Press Gallery (2 Students)</h3>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Reporter for Hearst's New York Journal — Jingoist Press</h4><div class="camp-tag">Press Gallery</div></div>
+            <p><strong>Who you are:</strong> You are a reporter for William Randolph Hearst's New York Journal, the leading yellow journalism paper. Your newspaper pioneered dramatic headlines, emotional appeals, and simplified moral narratives — and played a major role in turning Cuba into a front-page American cause. You helped stoke the war; now you cover the hearings with the same instincts: bold America, weak enemies, stories that sell.</p>
+
+            <p><strong>Your job:</strong> Cover the hearings from a pro-war, sensationalist angle. Frame annexation as strength, retreat as cowardice. Write 2-3 dramatic headlines during testimony (share during Session 2). Ask provocative questions after testimony — aim for quotes that make good copy, not balanced analysis. You are not neutral. You have an editorial line: America's destiny is greatness, and greatness requires action.</p>
+
+            <p><strong>Think about:</strong> How does the press shape what counts as "patriotic"? What stories do you NOT tell? What happens when journalism serves empire rather than truth?</p>
+        </div>
+
+        <div class="role-card">
+            <div class="role-header"><h4>Anti-Imperialist League Communications Director</h4><div class="camp-tag">Press Gallery</div></div>
+            <p><strong>Who you are:</strong> You are communications director for the American Anti-Imperialist League, founded in 1898 by prominent citizens including Mark Twain, Andrew Carnegie, William James, and Jane Addams. Your organization opposes U.S. acquisition of overseas colonies on constitutional, moral, and practical grounds. You cover the hearings and produce counter-messaging.</p>
+
+            <p><strong>Your job:</strong> Draft 2-3 broadsides or pamphlet headlines challenging expansionist claims (share during Session 2). Ask pointed questions after testimony — expose contradictions between American ideals and imperial practice. Cover the hearings from the anti-imperialist perspective. You have access to League members' arguments (Hoar, Carnegie, Twain, James) — cite them.</p>
+
+            <p><strong>Think about:</strong> How do you counter the emotional power of patriotic jingoism with constitutional principle? Is it harder to sell restraint than adventure? What happens when "anti-war" gets labeled "anti-American"?</p>
+        </div>
+
+    </div><!-- end #roles -->
+
+    <!-- KEY TERMS SECTION -->
+    <div id="terms" class="section">
+        <div class="header">
+            <h2>Key Terms &amp; Concepts</h2>
+        </div>
+
+        <div class="term-card">
+            <strong>Annexation</strong>
+            <p>Formal incorporation of territory into an existing political unit. In the case of the Philippines, annexation meant making the islands a US possession without offering a path to statehood. The debate centered on whether the Constitution "followed the flag" — whether constitutional protections would apply to annexed territories. This question shaped legal and political arguments throughout 1898–1902.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Anti-Imperialist League</strong>
+            <p>Founded in 1898 to oppose US acquisition of overseas colonies. Members included Mark Twain, Andrew Carnegie, William James, and Jane Addams. The League argued that imperialism contradicted founding principles, specifically the Declaration of Independence's assertion of "consent of the governed." Its organizing forced the moral question into newspapers and Senate hearings, making it impossible to ignore the contradiction between American ideals and imperial practice.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Benevolent Assimilation</strong>
+            <p>McKinley's framing of US rule as temporary and humanitarian — promising to "educate," "uplift," and prepare Filipinos for self-government. The logic was paternalistic: Filipinos supposedly lacked the capacity to govern themselves. Critics immediately called it a rationalization for conquest that masked economic interest and military aggression behind humanitarian language.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Chinese Exclusion Act (1882)</strong>
+            <p>Federal law banning Chinese immigration and barring Chinese residents from naturalization. It was the first US law to exclude an entire ethnic group, and was later extended by the Geary Act (1892). This law formed the backdrop for the annexation debate: the US was debating whether to govern millions of Asian subjects while simultaneously maintaining a racial ban on Asian citizenship.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Civilizing Mission</strong>
+            <p>The idea that empire is justified because it spreads "civilization" — tied to racist assumptions of Anglo-Saxon superiority and Social Darwinism. This concept framed conquest as a moral obligation rather than exploitation. It made colonial violence feel righteous and necessary, effectively obscuring the material interests driving imperial expansion.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Consent of the Governed</strong>
+            <p>From the Declaration of Independence: governments derive just powers from consent of those governed. Anti-imperialists used this principle to argue that annexing the Philippines without asking Filipinos violated America's founding ideology. It became a central flashpoint in the 1898–1899 Senate debate, forcing annexationists to either redefine "consent" or abandon the principle entirely.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Coaling Station</strong>
+            <p>A port where steam-powered warships could refuel with coal, essential to naval power in the age of steam. Coaling stations allowed navies to project force across vast distances. Control of bases in Guam, the Philippines, and Hawaii became a key strategic argument for territorial expansion — these islands would enable sustained US naval dominance in the Pacific.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Dawes Act (1887)</strong>
+            <p>Federal law breaking up tribal communal land into individual allotments, accelerating Indigenous land loss and cultural assimilation. It redistributed millions of acres to white settlers, devastating tribal economies. This law provided important background for understanding how "civilization" policy worked in practice before the Philippines debate began.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>De Lôme Letter</strong>
+            <p>A private letter from Spain's ambassador insulting President McKinley; its publication in February 1898 inflamed US public opinion. Combined with yellow journalism and the USS Maine explosion, the letter helped push the country toward war with Spain. The incident demonstrates how individual events could be weaponized by the press to shape foreign policy.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Frontier Thesis</strong>
+            <p>Frederick Jackson Turner's 1893 argument that the open frontier shaped American democracy, individualism, and social mobility. The 1890 "closing of the frontier" became a symbolic national crisis. This thesis gave intellectual cover to those wanting a "new frontier" overseas — the Philippines could be framed as a continuation of American expansion rather than a departure from tradition.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Great White Fleet (1907–1909)</strong>
+            <p>Roosevelt's dispatch of 16 battleships on a global circumnavigation to demonstrate US naval power. This fleet was a direct product of Mahan's strategic vision and the imperial ambitions that the 1898 annexation debate had set in motion. The fleet's very existence depended on the Pacific bases created by the annexation decision.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Guano Islands Act (1856)</strong>
+            <p>US law enabling Americans to claim unoccupied islands with guano deposits for extraction. This was an early legal mechanism of overseas expansion showing how US sovereignty could extend outward without creating new states or citizens. It served as a precedent for acquiring territory without incorporating it into the union.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Hawai'i Overthrow and Annexation (1893–1898)</strong>
+            <p>In 1893, American and European sugar planters overthrew Queen Liliuokalani with US Marine support — a coup against a sovereign government. President Cleveland refused to annex. In 1898, Congress annexed Hawaii via Newlands Resolution during the Spanish-American War, reframing a coup as strategic necessity. This pattern — American economic interests destabilizing a government, then the US acquiring territory — was a direct precedent for the Philippines.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Indian Wars (1862–1899)</strong>
+            <p>A major period of US Army warfare against Indigenous peoples during western expansion. By the 1890s, most tribes were confined to reservations. Veterans of these wars comprised 90% of top US Army officers sent to the Philippines. There was direct institutional, tactical, and ideological continuity between continental and overseas empire.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Insular Cases (1901–1922)</strong>
+            <p>Supreme Court decisions determining the constitutional status of territories acquired in 1898. The Court ruled that the Constitution did not fully apply to territories — creating a legal framework for colonial governance without a path to statehood. The same logic previously applied to Native American reservations, showing the deep continuity of American racial governance.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Jingoism</strong>
+            <p>Aggressive, warlike nationalism — "my country, right or wrong" patriotism. Jingoism was a key feature of 1890s political culture, shaped by yellow press coverage, Spanish-American War fever, and anxieties about national strength. It shaped what policies felt honorable or weak, making restraint and caution harder to argue for publicly.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Lake Mohonk Conference</strong>
+            <p>An annual gathering (1883–1916) of reformers advising on Indian policy. The conference advocated "benevolent" assimilation of Native Americans. In 1900 it expanded its mission to "other dependent races" including Filipinos, and in 1904 renamed itself to include "Other Dependent Peoples." The same personnel and ideology extended from domestic indigenous policy to overseas colonization.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Malolos Republic / First Philippine Republic</strong>
+            <p>An independent Philippine government inaugurated January 1899 with a democratic constitution and Emilio Aguinaldo as president. The US refused to recognize it, instead waging war to suppress it. The Republic's existence and relative stability proved that Filipinos had built functioning political institutions — institutions the US chose to destroy through military conquest.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Manifest Destiny</strong>
+            <p>The nineteenth-century belief that American expansion across North America was inevitable and divinely ordained. Expansionists extended this concept to the Pacific — the Philippines as the next frontier. Anti-imperialists argued that Manifest Destiny was a continental concept being dangerously stretched to justify overseas empire and racial conquest.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Monroe Doctrine (1823)</strong>
+            <p>US policy opposing European colonialism in the Western Hemisphere. Anti-imperialists argued that Philippine annexation contradicted its anti-colonial principles. Expansionists countered that the doctrine extended US hemispheric dominance to Asia. Both sides claimed the Monroe Doctrine, revealing how flexible it could be as a rhetorical tool.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Newlands Resolution (1898)</strong>
+            <p>Joint congressional resolution annexing Hawaii — used instead of a treaty because treaties required a two-thirds Senate vote. This legislative workaround exposes how empire can be built through legal innovation when the standard democratic process proves inconvenient.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Open Door Policy (1899–1900)</strong>
+            <p>US diplomacy seeking equal commercial access to China rather than formal colonization. This "non-colonial" language still assumed military leverage — markets needed force to remain accessible. The Philippines functioned as a platform for projecting commercial power into the Chinese market.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Platt Amendment (1901)</strong>
+            <p>Limits placed on Cuban sovereignty allowing US intervention and influence. Cuba was officially "independent" but controlled by American power in foreign policy and key decisions. This showed how "independence" could still mean subordination — an important precedent for understanding the range between full annexation and genuine self-rule.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Protectorate</strong>
+            <p>A territory formally "self-governing" but controlled by a stronger power in foreign policy and key decisions. A protectorate represented one policy alternative debated between full annexation and genuine independence. It raises the question of whether partial sovereignty is meaningful or merely cosmetic control dressed in different language.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Reconcentration / Reconcentrado</strong>
+            <p>Policy of forcibly relocating civilians into controlled zones to cut off support for fighters. Spain used this tactic in Cuba (1896–1897), which Americans condemned as barbaric. The US then used identical tactics in the Philippines (1900–1902). The hypocrisy was noted at the time and became an important anti-imperialist argument.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Social Darwinism</strong>
+            <p>Misapplication of evolutionary theory to human societies, claiming some "races" were more "evolved" than others. Used to justify imperialism as a "civilizing" mission. The concept shaped both sides of the debate — expansionists said race justified the civilizing mission; anti-imperialists said race made incorporation impossible and dangerous.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>"Strenuous Life"</strong>
+            <p>Roosevelt's idea that national greatness requires toughness, discipline, and readiness for struggle. His 1899 speech of the same name became a manifesto for imperial masculinity. It linked imperial expansion to cultural definitions of manhood, making empire feel like a moral test of character rather than a policy choice.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Teller Amendment (1898)</strong>
+            <p>Congressional pledge not to annex Cuba after the Spanish-American War. The amendment was used to frame the war as liberation rather than conquest. However, the US acquired Puerto Rico, Guam, and the Philippines regardless — the amendment's narrow scope revealing how much territorial ambition remained possible.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Treaty of Paris (December 10, 1898)</strong>
+            <p>Peace treaty ending the Spanish-American War. Spain ceded the Philippines to the US for $20 million, with Filipino people not consulted about their fate. The Senate ratified it February 6, 1899, by 57–27 — a single vote above the required two-thirds. Fighting broke out in Manila two days after ratification.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>"Water Cure"</strong>
+            <p>Torture tactic used by some US forces in the Philippines: forcing water down captives' throats until near-drowning, then applying pressure to the stomach. This practice was exposed in 1902 Senate hearings and became a major embarrassment for the Roosevelt administration. It revealed the brutal realities behind "benevolent assimilation" rhetoric.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>"White Man's Burden"</strong>
+            <p>Phrase from Rudyard Kipling's 1899 poem urging the US to colonize the Philippines. It expressed the racist ideology that white nations had a duty to "civilize" non-white peoples — that imperialism was a burden imposed by racial superiority. The phrase gave emotional and moral weight to the annexation cause.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Wounded Knee (1890)</strong>
+            <p>Massacre of approximately 250–300 Lakota men, women, and children by US troops; twenty soldiers received the Medal of Honor. Often treated as symbolic end of the Indian Wars and frontier era, it occurred the same year the Census declared the frontier "closed" — triggering the anxiety Turner's thesis described. Eight years before the annexation debate began.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Yellow Journalism</strong>
+            <p>Sensational press pioneered by Hearst (New York Journal) and Pulitzer (New York World): dramatic headlines, emotional appeals, simplified moral narratives, and sometimes outright fabrication. Yellow newspapers turned Cuban suffering into a national American cause and created overwhelming public pressure for war in 1898. It demonstrated how media could shape foreign policy.</p>
+        </div>
+
+        <div class="term-card">
+            <strong>Young's Scouts</strong>
+            <p>Elite 25-man US Army unit commanded by William H. Young, a veteran of the 1877 Nez Perce War. They conducted "rice burning expeditions" and seek-and-destroy missions against Filipino populations. This unit exemplified direct institutional transfer of Indian Wars counterinsurgency tactics to the Philippines.</p>
+        </div>
+
+    </div><!-- end #terms -->
+
+    <!-- ESSENTIAL READING SECTION -->
+    <div id="postdebate" class="section">
+        <div class="header">
+            <h2>Essential Reading</h2>
+        </div>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">Part I: Why 1898? The Domestic Context</h3>
+
+        <h4>The Anxious 1890s</h4>
+        <p>The United States entered the 1890s in crisis. The Panic of 1893 triggered one of the nation's most severe depressions, lasting four years. Banks collapsed by the thousands. Unemployment soared. Farm prices plummeted, driving agricultural regions toward bankruptcy. In 1894, federal troops crushed the Pullman Strike — a massive railroad worker strike — with lethal force; dozens were killed, signaling that the state would use violence to protect capital. Meanwhile, the Census Bureau announced in 1890 that the frontier was "closed" — no longer an unbroken line of available western territory. In the South, Jim Crow segregation was hardening into law, locking Black citizens into subordinate status. For many Americans, especially the political and business elite, these pressures — economic catastrophe, labor unrest, the symbolic end of western expansion, racial entrenchment — created a collective appetite for expansion elsewhere. A new frontier, markets for surplus goods, investment opportunities, and a global stage for American power seemed to offer relief from domestic crisis.</p>
+
+        <h4>Expansion as Old American Tradition</h4>
+        <p>Annexationists did not invent expansion in 1898. The United States had a century of territorial growth: Jefferson's Louisiana Purchase, Jackson's conquest of Florida, Polk's Mexican War, and continuous westward encroachment on Native American lands. By framing the Philippines as consistent with this history, expansion advocates made empire seem natural and inevitable rather than new and dangerous. This rhetorical move — "We have always expanded; this is just the next step" — made opposition seem not principled but cowardly and backwards-looking.</p>
+
+        <h4>The Explosion and the War</h4>
+        <p>On February 15, 1898, the USS Maine exploded in Havana harbor, killing 266 sailors. The cause was unknown (likely accidental), but the yellow press blamed Spain. Yellow newspapers — Hearst's New York Journal and Pulitzer's New York World — dominated headlines with sensational stories, inflaming public opinion. Congress declared war on Spain April 25, 1898. The war was brief and lopsided. Commodore George Dewey's Pacific Squadron destroyed Spain's fleet at Manila Bay on May 1. Cuba fell within four months. Spain sued for peace.</p>
+
+        <h4>From War to Conquest: The Island Grab</h4>
+        <p>The Treaty of Paris, signed December 10, 1898, transferred territory from Spain to the United States: Puerto Rico, Guam, and — most significantly — the Philippines. The price was $20 million. Crucially, no Filipinos were present to consent to or object to this transfer. In the same year, the United States also annexed Hawaiʻi via the Newlands Resolution (rather than through a treaty that would have required a two-thirds Senate vote). Within months, the United States had acquired more than 100,000 square miles of overseas territory and would govern millions of nonwhite subjects.</p>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">Part II: The War</h3>
+
+        <h4>Before the Americans: The Philippine Revolution</h4>
+        <p>The Philippines were not a blank slate awaiting American tutelage. In August 1896, Filipinos launched a revolution against Spanish rule. Emilio Aguinaldo, a revolutionary leader, led the movement. Spain exiled him to Hong Kong in 1897. In May 1898 — during the Spanish-American War — Dewey's victory at Manila Bay prompted the U.S. Navy to bring Aguinaldo back from Hong Kong to help rally anti-Spanish forces. (American officers believed he would cooperate with them.) Aguinaldo declared Philippine independence on June 12, 1898, and built a government and constitution. By late 1898, Filipinos controlled most of the archipelago.</p>
+
+        <h4>The Fall of Manila and Its Aftermath</h4>
+        <p>On August 13, 1898, U.S. forces took Manila in what historians often describe as a prearranged U.S.–Spanish surrender — a "mock battle" orchestrated so Spain could capitulate to the Americans rather than to Filipino forces. Aguinaldo's army, which had fought and died against Spain, was shut out of the capital. At the Treaty of Paris in December, Filipinos were not present and had no voice in the transfer of sovereignty. On December 21, McKinley issued his "Benevolent Assimilation" proclamation, promising to "educate," "uplift," and prepare Filipinos for self-government — but under American control, with no timeline specified. Many Filipino leaders experienced this sequence as a betrayal: they had allied with the United States against a common enemy, only to discover that American sovereignty would replace Spanish sovereignty.</p>
+
+        <div class="quote-box">
+            "I hoped that once the [Treaty of] Paris conference was at an end my people would obtain the independence promised them.... But it did not turn out thus."
+            <div class="attribution">— Emilio Aguinaldo, January 1899</div>
+        </div>
+
+        <h4>The Outbreak</h4>
+        <p>On February 4, 1899, shooting broke out in Manila. Both sides blamed the other for initiating. Two days later, on February 6, 1899, the Senate advised ratification of the Treaty of Paris (57–27, exactly two-thirds required). Fighting that had already started was now officially sanctioned. At the moment of ratification, the U.S. controlled Manila and its immediate environs; Filipino Republican forces controlled the vast majority of the archipelago beyond the capital. The war was about to begin in earnest.</p>
+
+        <div class="quote-box">
+            "The great nation of Washington and Lincoln must understand that force, no matter how powerful, cannot annihilate the aspirations of eight million souls who are conscious of their own power, honor, and rights."
+            <div class="attribution">— Apolinario Mabini, Filipino statesman, 1899</div>
+        </div>
+
+        <h4>The Schurman Commission</h4>
+        <p>On January 20, 1899, even as war was breaking out, McKinley established the Schurman Commission (headed by Cornell University president Jacob Schurman) to gather information about Filipino populations, their legislative needs, and how the U.S. might maintain order and administer the islands. This reveals an important pattern: even as the military was fighting, the political and bureaucratic machinery of occupation was already being designed. The U.S. was planning colonial administration before the outcome of the war was certain.</p>
+
+        <h4>The Conventional Phase (February–November 1899)</h4>
+        <p>The Philippine Republic fielded a conventional army against superior American firepower. U.S. forces, better armed and trained, won every major engagement. By November 1899, the conventional army was shattered. Aguinaldo made a strategic decision: dissolve the regular army and shift to guerrilla warfare.</p>
+
+        <h4>The Guerrilla Phase (November 1899–1902)</h4>
+        <p>From November 1899 onward, the war transformed into small-unit ambushes, nighttime raids, and intelligence networks embedded in civilian populations. The Filipino strategy aimed to make war so costly in American lives and resources that American public opinion would turn against the occupation. The U.S. responded with escalating counterinsurgency tactics drawn directly from the Indian Wars: scorched-earth campaigns, forced reconcentration of civilian populations, collective punishment of villages suspected of harboring fighters, reprisals, and the systematic destruction of food supplies. The line between combatant and civilian was deliberately blurred as a strategic tool. Villages were burned. The water cure — a torture technique forcing water down a person's throat — was deployed. American soldiers wrote home about the brutality, but these accounts were often censored or suppressed.</p>
+
+        <h4>The End</h4>
+        <p>Three developments broke Filipino resistance: In March 1901, American forces captured Aguinaldo — a psychological blow that suggested the war was lost. Reconcentration policies isolated fighters from civilian support networks, though at enormous humanitarian cost. And the transition to civilian governance under William Howard Taft signaled that the U.S. was settling in for permanent rule, making continued military resistance seem futile. On July 4, 1902, President Roosevelt issued a full amnesty proclamation and declared the war officially over. Armed resistance, particularly in Mindanao, continued for over a decade.</p>
+
+        <p>Paradoxically, the very war that aimed to annihilate Filipino independence aspirations forged a unified Filipino national identity. Before 1898, the Philippines were a collection of kingdoms, sultanates, and ethnic regions with distinct languages and traditions — not a unified nation. The shared experience of resistance, the figures who died fighting, and the guerrilla campaign itself created the emotional and institutional basis for Filipino nationalism. The United States did not "civilize" Filipinos into being; it gave them a reason to imagine themselves as one nation.</p>
+
+        <div class="context-box" style="margin: 2rem 0;">
+            <h4>Timeline: From the Maine to the End of the War</h4>
+            <table style="width:100%; border-collapse:collapse; font-size:0.92rem; line-height:1.6;">
+                <tr><td style="padding:0.3rem 0.8rem 0.3rem 0; width:11rem; font-weight:600; white-space:nowrap; vertical-align:top;">Feb. 15, 1898</td><td style="padding:0.3rem 0; vertical-align:top;">USS <em>Maine</em> explodes in Havana harbor; 266 sailors killed.</td></tr>
+                <tr><td style="padding:0.3rem 0.8rem 0.3rem 0; font-weight:600; white-space:nowrap; vertical-align:top;">May 1, 1898</td><td style="padding:0.3rem 0; vertical-align:top;">Commodore Dewey destroys Spain's Pacific fleet at Manila Bay.</td></tr>
+                <tr><td style="padding:0.3rem 0.8rem 0.3rem 0; font-weight:600; white-space:nowrap; vertical-align:top;">June 12, 1898</td><td style="padding:0.3rem 0; vertical-align:top;">Aguinaldo declares Philippine independence; a constitutional republic begins to form.</td></tr>
+                <tr><td style="padding:0.3rem 0.8rem 0.3rem 0; font-weight:600; white-space:nowrap; vertical-align:top;">Aug. 13, 1898</td><td style="padding:0.3rem 0; vertical-align:top;">Manila falls to U.S. forces in a prearranged surrender; Filipino forces are barred from the city.</td></tr>
+                <tr><td style="padding:0.3rem 0.8rem 0.3rem 0; font-weight:600; white-space:nowrap; vertical-align:top;">Dec. 10, 1898</td><td style="padding:0.3rem 0; vertical-align:top;">Treaty of Paris signed; Spain cedes the Philippines to the U.S. for $20 million. No Filipinos present.</td></tr>
+                <tr><td style="padding:0.3rem 0.8rem 0.3rem 0; font-weight:600; white-space:nowrap; vertical-align:top;">Dec. 21, 1898</td><td style="padding:0.3rem 0; vertical-align:top;">McKinley issues the "Benevolent Assimilation" proclamation.</td></tr>
+                <tr><td style="padding:0.3rem 0.8rem 0.3rem 0; font-weight:600; white-space:nowrap; vertical-align:top;">Feb. 4, 1899</td><td style="padding:0.3rem 0; vertical-align:top;">Shooting breaks out in Manila; the Philippine-American War begins.</td></tr>
+                <tr><td style="padding:0.3rem 0.8rem 0.3rem 0; font-weight:600; white-space:nowrap; vertical-align:top;">Feb. 6, 1899</td><td style="padding:0.3rem 0; vertical-align:top;">Senate advises ratification of the Treaty of Paris (57–27).</td></tr>
+                <tr><td style="padding:0.3rem 0.8rem 0.3rem 0; font-weight:600; white-space:nowrap; vertical-align:top;">Nov. 1899</td><td style="padding:0.3rem 0; vertical-align:top;">Aguinaldo dissolves conventional army; war shifts to guerrilla phase.</td></tr>
+                <tr><td style="padding:0.3rem 0.8rem 0.3rem 0; font-weight:600; white-space:nowrap; vertical-align:top;">Mar. 1901</td><td style="padding:0.3rem 0; vertical-align:top;">Aguinaldo captured by U.S. forces; takes oath of allegiance to the United States.</td></tr>
+                <tr><td style="padding:0.3rem 0.8rem 0.3rem 0; font-weight:600; white-space:nowrap; vertical-align:top;">July 4, 1902</td><td style="padding:0.3rem 0; vertical-align:top;">President Roosevelt declares the war officially over; armed resistance continues in Mindanao for years.</td></tr>
+            </table>
+        </div>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">Part III: Race, the Indian Wars, and the Logic of Colonial Violence</h3>
+
+        <p>The Philippine-American War did not happen in isolation from American history. It was a direct, institutional, tactical, and ideological continuation of the Indian Wars. As historian Paul Kramer argues, race was not incidental to the war — it was structural. The war did not just reflect existing racism; it produced new racial categories. American soldiers and officers "tribalized" Filipinos, describing them as "savages" needing pacification, not as potential fellow citizens.</p>
+
+        <h4>The Pattern</h4>
+        <p>In North America, the pattern was clear: the United States purchased or conquered territory, then fought Native Americans to colonize and "civilize" it. In the Philippines, the U.S. purchased rights from Spain, then fought Filipinos to pacify and govern them. In both cases, resistance was racialized as savagery requiring pacification rather than as legitimate political opposition.</p>
+
+        <h4>Personnel: An Army Shaped by the Indian Wars</h4>
+        <p>A significant share of senior U.S. commanders sent to the Philippines had built their careers in the Indian Wars, and they carried that repertoire — tactically and rhetorically — into the Pacific (Aune). This was not accidental — it was deliberate policy. The Army believed that experience fighting Native Americans was the best credential for fighting Filipinos. General Elwell S. Otis, commander of U.S. forces in the Philippines early in the war, had spent decades in frontier campaigns. General Samuel B. M. Young, who had served in the campaigns against Geronimo, was deployed as a senior counterinsurgency commander.</p>
+
+        <div class="context-box">
+            <h4>The Credential</h4>
+            <p>"General Lawton, whose life has been spent in fighting Indians, is the best equipped man in the army for this peculiar service." This Army officer, describing General Henry W. Lawton's qualifications for fighting Filipinos, shows how the Indian Wars experience was explicitly valued as preparation for empire.</p>
+        </div>
+
+        <h4>Tactics: Frontier Methods Transferred</h4>
+        <p>The tactical transfer was direct. Young's Scouts — a 25-man elite unit from the 1877 Nez Perce War — conducted "rice burning expeditions" in the Philippines, mirroring the buffalo destruction campaigns of the Indian Wars. The U.S. forced Filipino civilians into reconcentration zones (mirroring Spain's similar tactic in Cuba, which Americans had condemned as barbaric). American officers burned barrios to deny supplies to guerrillas. The water cure was deployed. General Jacob Smith issued an extermination order to kill anyone over age ten in certain zones.</p>
+
+        <div class="context-box">
+            <h4>Smith's Orders</h4>
+            <p>"Every barrio... will be burned, if necessary to effect a complete destruction of the enemy." — General J. Franklin Bell, 1901. "I want no prisoners. I wish you to kill and burn." — General Jacob Smith, 1901.</p>
+        </div>
+
+        <h4>Ideology: Race-Making in Real Time</h4>
+        <p>Soldiers called Filipinos "Indians" and spoke of combat as "hunting" — directly mapping Indian Wars language onto a new enemy. As guerrilla resistance intensified, American military escalation and racialization fed each other in a spiral. Soldiers portrayed Filipinos as "tribal" peoples incapable of understanding civilization, law, or self-governance. The worse the fighting, the more "savage" and "childlike" the enemy was described as being. Contemporary soldier diaries reveal this pattern: the more violence the U.S. employed, the more the enemy was described as deserving it. Kramer argues that the war generated new racial logic in real time — the act of war itself produced the "knowledge" that Filipinos were racially inferior.</p>
+
+        <h4>One Soldier's Journey: The Kinne Diary</h4>
+        <p>Private Charles S. Kinne kept a diary of his service in the Philippines. Traveling west by train before shipping out, Kinne passed through the American West — lands that had been "pacified" during the Indian Wars. Native Americans were confined to reservations. The landscape had been colonized. For Kinne and soldiers like him, the Philippines was simply the next frontier — the logical extension of a project that had already fundamentally reshaped North America.</p>
+
+        <h4>Cultural Celebration</h4>
+        <p>Children's books by Edward Stratemeyer and other authors celebrated General Lawton as a hero, first in the Indian Wars and then in the Philippines, making both conflicts feel like chapters in a single, heroic American narrative.</p>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">Part IV: Building a Colonial State</h3>
+
+        <h4>The Schurman Commission Report</h4>
+        <p>In January 1900, the Schurman Commission issued its findings. It had investigated Filipino political aspirations, legal traditions, and governance capacity. The Commission found that Filipinos desired religious freedom, human rights, and home rule — in other words, self-determination. But the Commission concluded that Filipinos were "incapable of self-governance." Empire became pedagogy: the United States would not simply rule; it would teach Filipinos how to govern themselves, on a timeline determined entirely by Americans.</p>
+
+        <h4>Taft and the Second Commission</h4>
+        <p>William Howard Taft, a federal judge appointed as head of the Second Philippine Commission, summarized his racial framework bluntly: Filipinos were "ignorant, superstitious, and credulous." He predicted they would need "fifty or a hundred years" to understand the principles of Anglo-Saxon liberty and self-governance. Taft designed a comprehensive colonial governance system: civilian administration replacing military rule, public works projects (roads, schools, courts), and the promise of eventual "limited self-governance" — but always under ultimate American sovereignty. In Taft's view, delivering tangible benefits would convince Filipinos that American rule was benevolent, making resistance seem unreasonable.</p>
+
+        <h4>Commission Government</h4>
+        <p>On September 1, 1900, the Philippine Commission assumed legislative powers. The Commission consisted of Americans appointed by the President. There was no Filipino input into governance. Taft believed that if Americans made the trains run on time and built schools, Filipinos would accept rule without consent.</p>
+
+        <h4>The Spooner Amendment and Civil Government</h4>
+        <p>In March 1901, Congress passed the Spooner Amendment, which codified Taft's vision into law. On July 4, 1901, Taft became Civil Governor of the Philippines. The Philippine Organic Act of 1902 organized the archipelago as an "unorganized territory" (not granted a path to statehood), created an elected Philippine Assembly with limited powers, and allowed the Philippines to send two Resident Commissioners to observe Congress (but not vote). The legal architecture was now in place: empire, bureaucratized and normalized.</p>
+
+        <h4>The Collaborative Empire</h4>
+        <p>The American occupation succeeded — to the extent it did — because it found local collaborators. The ilustrados — wealthy, educated Filipino elites — often cooperated with the Americans for economic and political reasons. Benito Legarda, who had initially opposed annexation, shifted to collaboration. The Partido Federal formed in 1900–1901 to support American rule. This was not passive acceptance; it was rational calculation by Filipino leaders who could not defeat American military power but believed they might shape its exercise. They bargained for seats on commissions, government positions, and influence over policy. Some genuinely believed American governance would modernize the islands; others simply accepted the new reality.</p>
+
+        <h4>Institution-Building as Empire</h4>
+        <p>Here is the paradox: empire was built not merely through military force but through institution-building. The Commission, the civil government, the school system, the courts, the bureaucracy — these structures made occupation permanent and normalized it. By 1902, the Philippines was organized as a colonial state integrated into American law, administration, and bureaucracy. Removing the Americans would require dismantling these institutions, a far more complex task than military resistance alone.</p>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">Part V: Race and the Politics of Empire</h3>
+
+        <h4>Race as Justification</h4>
+        <p>Expansionists made racial arguments for annexation. Albert J. Beveridge called expansion "elemental" and "racial," a "divine mission." He described Filipinos as "children utterly incapable of self-government." William Howard Taft called them "little brown brothers" — a paternalism that acknowledged their humanity while denying their capacity. Both sides agreed: race explained why Filipinos needed American rule.</p>
+
+        <h4>Race as Opposition</h4>
+        <p>Anti-imperialists also used race as their central argument — but to opposite effect. Champ Clark of Missouri opposed Hawaiian annexation because of the islands' Asian and Pacific Islander populations. He warned that annexing Hawaii would introduce "polyglot" (mixed-race) populations into the American body politic, threatening racial homogeneity. Race made empire dangerous because it would force the United States to govern nonwhite peoples and (potentially) make them citizens.</p>
+
+        <h4>The Paradox of Racial Argument</h4>
+        <p>Both sides of the debate used identical racialized logic to reach opposite conclusions. Expansionists: "Filipinos are racially inferior; therefore they need our civilizing mission." Anti-imperialists: "Filipinos are racially inferior; therefore we cannot safely make them citizens or govern them without becoming corrupted ourselves." The debate was not about whether race mattered — the entire political spectrum accepted racial hierarchy as a fundamental fact. The argument was about what to do with these "inferior races." Both sides assumed racial ordering; they disagreed only on the policy response.</p>
+
+        <h4>The Hawaiian Precedent</h4>
+        <p>Hawaii annexed in 1898 had substantial Japanese and Chinese populations. If the U.S. annexed Hawaii (and later the Philippines), would Asian residents and their descendants become American citizens? This raised an unresolvable contradiction: the United States was simultaneously maintaining a racial ban on Asian immigration and naturalization (the Chinese Exclusion Act of 1882) while acquiring territory with Asian populations. How could the nation exclude Asians from citizenship in California while governing Asian peoples in Hawaii and the Philippines?</p>
+
+        <h4>Social Darwinism as Framework</h4>
+        <p>Underneath both sides of the debate lay a pseudo-scientific consensus: Social Darwinism. The idea was that races competed for survival and dominance, that some were more "evolved" than others, and that this competition was natural and inevitable. Educated Americans across the political spectrum — expansionists, anti-imperialists, labor leaders, reformers — accepted this racial premise. The argument was never whether races were unequal; it was whether inequality justified annexation or precluded it.</p>
+
+        <h4 style="margin-top:2rem;">The Partisan Roots of Anti-Imperialism</h4>
+        <p>The post-Reconstruction partisan realignment dramatically changed the nature of anti-imperialist activism in the United States. In the years before the Civil War, suspicion of Slave Power and anti-imperialism complemented each other, with a more reformist vision at home accompanying a vision for a less militaristic foreign policy. During the Gilded Age, however, anti-imperialism became more associated with the right, especially Southern Democrats. Their interest in the cause was almost entirely cynical: a fear of creating a precedent for a more powerful national government that could, at least in theory, be applied against the racial caste system that they so strongly defended. The result was a dizzying array of imperialist ventures launched by Republican administrations eager to expand U.S. economic might that were reversed during the Gilded Age periods when Democrats dominated Congress or the White House.<sup>21</sup></p>
+
+        <p>The clearest example of the pattern involved the Frelinghuysen-Zavala Treaty, in which the United States sought a protectorate over Nicaragua to facilitate construction of a trans-Isthmian canal. But Republicans narrowly lost the 1884 presidential election to Grover Cleveland, and the new president promptly withdrew the treaty from consideration. His secretary of state, former Delaware senator Thomas Bayard, reflected post-Civil War sentiments on the need for a limited government, including in foreign affairs, and retained a cautious approach diplomatically for the next four years.<sup>22</sup></p>
+
+        <p>The best-known Gilded Age debate about imperialism revolved around the U.S. relationship with the Kingdom of Hawaiʻi. The strategically located islands had generated a strategic, economic, and cultural rivalry between the United States, Britain, and eventually Japan, which intensified as the 19th century proceeded. In 1893, with the tacit support of Republicans in Washington, U.S. business interests launched a coup against Queen Liliuokalani and proclaimed a Hawaiʻian "republic." The new entity quickly petitioned the U.S. government for formal annexation. By the time of the coup, the 1892 election had replaced Benjamin Harrison with Cleveland — who, as he had earlier with regards to Nicaragua, refused to endorse an imperialist venture. But Cleveland's anti-imperialism was of a limited variety. His administration declined the queen's request to help restore her to power, a venture in which congressional Democrats likewise displayed little interest. When Cleveland's Democrats lost power following the 1896 elections, the new administration of William McKinley revived the annexation idea, and Hawaiian independence ended.</p>
+
+        <h4>An Imperial Moment: Treaty Ratification and Its Politics</h4>
+        <p>The limits of this more conservative version of anti-imperialism became clear in the aftermath of the Spanish-American War. McKinley's administration accompanied a conflict with Spain over Cuba with an ambitious plan to seize Spanish colonies in Puerto Rico and the Philippines — the latter despite the existence of an anti-colonial revolt that envisioned an independent republic under Emilio Aguinaldo. The war ended with an 1899 treaty that transferred Spanish sovereignty in the Philippines (and Puerto Rico) to the United States. Though Republicans possessed a Senate majority, McKinley needed some Democratic support to get the requisite two-thirds for approval.</p>
+
+        <p>As had occurred in the 1850s, the existence of aggressive political and ideological defenses of imperialism stimulated a powerful anti-imperialist dissent. But by this point, the ideological focus of anti-imperialism had shifted considerably. Sumner's successor in the Senate, George Hoar, charged that imperialists believed "we have outgrown the principles and the interpretation which were sufficient for our thirteen states and our 3 million people in the time of their weakness," thereby embracing an imperialist doctrine that "would make of every war between civilized and powerful nations a war of extermination or a war of dishonor." Hoar was blunt: "You have no right at the cannon's mouth to impose on an unwilling people your Declaration of Independence and your Constitution and your notions of freedom and notions of what is good."<sup>23</sup></p>
+
+        <p>In the end, however, Hoar was one of only two Republican senators to vote against the treaty. Its fate — reflecting the new politics of anti-imperialism — came down to Southern Democrats. Democrats who opposed acquisition of the Philippines borrowed from John Calhoun's approach of stressing racism and limited government to make their case. But this anti-imperialism was of a limited variety — most Southern Democrats did not oppose imperialism per se. Instead, they feared how an imperialistic foreign policy could threaten Jim Crow, both ideologically and constitutionally.<sup>24</sup> This viewpoint provided an opening for the McKinley administration: the president ultimately got the treaty approved through a deal with Louisiana Senator Samuel McEnery, in which McEnery agreed to vote for the treaty in exchange for McKinley granting him control over federal patronage in the state.<sup>25</sup></p>
+
+        <h4>The Anti-Imperialist League</h4>
+        <p>The battle over the Philippines stimulated the largest grassroots foreign policy organization in American history until that time. The Anti-Imperialist League, which claimed a membership of 250,000, deemed McKinley's efforts in the Philippines a "criminal aggression" that would "extinguish the spirit of 1776 in those islands." In addition to its membership base, the League attracted high-profile support, including philanthropist Andrew Carnegie and satirist Mark Twain. "I am an anti-imperialist," Twain proclaimed. "I am opposed to having the eagle put its talons on any other land." He worried that "we have gone there to conquer, not to redeem." But the League was, in many ways, of a different era; its mostly Northeastern base harkened back to the ties between abolitionism and anti-imperialism. Its internal divisions were intensified by debates over endorsing Democrat William Jennings Bryan in the 1900 election. Although Bryan had opposed acquisition of the Philippines, his economic agenda enjoyed scant support in the Northeast. After McKinley's victory in 1900, the organization continued its efforts exposing the excesses of the occupation — chiefly the use of water torture against captured Filipino prisoners — but it did not survive to challenge the imperialist ventures of Theodore Roosevelt or Woodrow Wilson during the Progressive Era.<sup>26</sup></p>
+
+        <h4>The Insular Cases: Empire and the Constitution</h4>
+        <p>As opponents of acquiring the Philippines warned, imperialism and the Constitution's promises of equal protection and due process could not be easily reconciled. In a series of decisions collectively known as the Insular Cases, the Supreme Court held that since the new "possessions are inhabited by alien races, differing from us in religion, customs, laws, methods of taxation, and modes of thought, the administration of government and justice, according to Anglo-Saxon principles, may for a time be impossible."<sup>27</sup> Three years later, addressing the question of constitutional rights for residents of the colonies, the Court ruled that if the United States should acquire territory "peopled by savages," it was not required to extend full constitutional protections.<sup>28</sup> The era's "great dissenter," John Marshall Harlan, opposed the Insular Cases from the same perspective as he dissented from <em>Plessy v. Ferguson</em>. But — as with Jim Crow — Harlan was in the minority.</p>
+
+        <h4>The Decline of Right-Wing Anti-Imperialism</h4>
+        <p>The last vestiges of the Gilded Age pattern came during the administration of Theodore Roosevelt, as Southern Democrats resisted the president's efforts to expand U.S. influence in the Caribbean Basin. Roosevelt's most ambitious policy in this regard started in 1905, when the United States — fearful of European intentions after a Hague Court decision regarding Venezuela appeared to justify military action on behalf of bondholders — attempted to secure a customs receivership over the Dominican Republic. Since the proposal was presented in the form of a treaty, it required Senate approval and some Democratic support. Georgia Senator Augustus Bacon, joined by Maryland Democrat Isidor Rayner, resisted. Rayner criticized Roosevelt's policy as unfairly benefiting financial interests and worried about the administration transforming the Monroe Doctrine into "an instrument of terror and oppression."<sup>30</sup> After two years of frustration, Roosevelt changed tactics and implemented the customs arrangement through an executive agreement — so as, he remarked during the debate, to sidestep the "average yahoo among the Democratic senators" who had blindly backed Bacon and Rayner.<sup>31</sup></p>
+
+        <p>While Bacon, Rayner, and their party allies prevented a customs receivership treaty, Democratic senators showed less willingness to resist the wishes of a Democratic president. Woodrow Wilson's election in 1912, followed by the new president's enunciation of a bold international vision, broke the power of right-wing anti-imperialism in the South. Over the course of his presidency, Wilson enjoyed near-monolithic support from Senate Democrats, with only a small number — most prominently Mississippi's James Kimble Vardaman and Missouri's James Reed — questioning the president's handling of international affairs. Few, if any, presidents featured as wide a gap between rhetoric and action as Wilson on questions of imperialism. As historian Thomas Knock has most persuasively argued, Wilson sought to integrate domestic reform principles into his international vision — but the results would expose the limits of that aspiration.<sup>32</sup></p>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">Part VI: Human Cost and Legacy</h3>
+
+        <div class="warning-box">
+            <h4>Casualties</h4>
+            <p><strong>U.S. military deaths:</strong> 4,200+ soldiers. <strong>Filipino military deaths:</strong> Approximately 20,000. <strong>Filipino civilian deaths:</strong> Estimates range from 200,000 to 1,000,000. The enormous range reflects difficulty in counting deaths across a dispersed conflict and multiple causes: direct violence, starvation, disease epidemics. War killed far greater proportion of the Filipino population than the Civil War killed of the U.S. population.</p>
+        </div>
+
+        <h4>African American Soldiers</h4>
+        <p>Over 6,000 African American soldiers served in the Philippines. Many enlisted hoping military service would prove their patriotism and entitle them to full citizenship rights. They found that white soldiers treated Filipinos with the same racial contempt they experienced at home. Some Black soldiers, aware of this irony, became skeptical of the war and the empire it created.</p>
+
+        <div class="quote-box">
+            "I feel sorry for these people.... You have no idea the way [Filipinos] are treated by the [white] Americans here."
+            <div class="attribution">— Sergeant Patrick Mason, 25th Infantry, 1899</div>
+        </div>
+
+        <p>The war that began seeking to annihilate Filipino independence aspirations had an ironic outcome: it created the very nation it aimed to suppress. Before 1898, no unified Filipino nation existed — the islands were a collection of kingdoms, sultanates, ethnic regions, and colonial jurisdictions. The brutality of the war, the shared experience of resistance, and the emergence of guerrilla fighters and executed generals as national symbols forged what had not existed before: the emotional and institutional basis for a Filipino nation. The nation Filipinos built, and that the world would eventually recognize, was produced in and through the war to prevent its existence.</p>
+
+        <div class="context-box">
+            <h4>Further Reading</h4>
+            <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                <li>Paul A. Kramer. "The Philippine-American War as Race War." <em>History News Network</em>, 2006. Link: historynewsnetwork.org</li>
+                <li>Kristin L. Aune. "Indian Fighters in the Philippines: The Indian Wars and America's Colonial Empire." <em>Pacific Historical Review</em> 90:4 (2021).</li>
+                <li>Glenn Anthony May. "Why the United States Won the Philippine-American War." <em>Pacific Historical Review</em> 52:4 (1983).</li>
+                <li>"The Philippines, 1898–1946: An Overview." <em>History, Art & Archives, U.S. House of Representatives</em>. Link: history.house.gov</li>
+            </ul>
+        </div>
+
+        <h4>Reflection Questions</h4>
+        <ol style="margin: 1.5rem 0; padding-left: 1.5rem;">
+            <li>The 1890s were a decade of domestic crisis — depression, labor conflict, closed frontier, Jim Crow entrenchment. How did these pressures create appetite for overseas expansion? Does expansion solve domestic problems or distract from them?</li>
+            <li>What does the "collaborative empire" reveal about how imperialism works? How did the Taft Commission, Federal Party, and ilustrados transform the war's outcome into long-term institutional rule?</li>
+            <li>Both expansionists and anti-imperialists used race to argue opposite positions. What does it mean that the entire debate operated within a framework of racial hierarchy? Did anti-imperialists escape the race thinking they claimed to oppose?</li>
+            <li>How did the reality of the Philippine-American War compare to expansionist predictions? What did anti-imperialists get right about the costs and consequences? What surprised everyone?</li>
+            <li>Kramer argues the war didn't just reflect racism but produced it. Where do you see this spiral in the evidence — how did war escalation change how Americans described Filipinos?</li>
+            <li>What does the transfer of personnel, tactics, ideology from Indian Wars to Philippines reveal about American colonialism? Is "unprecedented" the right word for 1898? Or is it the culmination of a longer pattern?</li>
+            <li>Over 6,000 Black soldiers served. How does their experience connect to the arguments made by Grimké and Wells about the hypocrisy of empire at home? What were they asking America to see?</li>
+        </ol>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">Part VII: Psychology of Imperialism — Beyond Pro/Con</h3>
+
+        <p>Understanding why imperialism happens — and why it's so hard to stop — requires more than counting votes or measuring military strength. Three scholarly frameworks help explain the deeper logic.</p>
+
+        <h4>Framework 1: The Meddler's Trap (Cognitive Psychology)</h4>
+
+        <p><strong>Source:</strong> Aroop Mukharji, "The Meddler's Trap," <em>International Security</em> 48:2 (Fall 2023)</p>
+
+        <p>Mukharji's concept of the "meddler's trap" describes a psychological mechanism: military intervention creates a new problem that the intervener feels compelled to solve, and the intervener values solving this problem more precisely because their own intervention created it. The tautology: the problem, the solution, and the value of solving it are all consequences of the intervention itself.</p>
+
+        <div class="context-box">
+            <h4>Three Interacting Beliefs</h4>
+            <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                <li>(1) If we leave, chaos results.</li>
+                <li>(2) Our presence can prevent that chaos.</li>
+                <li>(3) This matters to national interests precisely because we are already there.</li>
+            </ul>
+            <p>The trap: these three beliefs form a closed loop. The intervening power cannot escape without seeming to fail.</p>
+        </div>
+
+        <p>This operates through the "endowment effect" — a cognitive bias where people overvalue goods they feel they already own or control. Military intervention in the Philippines created an expanded sense of ownership and responsibility. McKinley and subsequent policymakers felt the Philippines were already "ours" (purchased from Spain, occupied militarily) and therefore worth protecting, governing, and integrating at any cost.</p>
+
+        <div class="warning-box">
+            <h4>Modern Parallels</h4>
+            <p>Vietnam, Iraq, Afghanistan — the same meddler's trap recurs. Intervention creates instability; instability justifies continued intervention; continued intervention deepens ownership and commitment; exit becomes politically and psychologically impossible.</p>
+        </div>
+
+        <p><strong>Discussion:</strong> Where do you see evidence of the meddler's trap in McKinley's decision-making? Could the U.S. have avoided it? How does the psychology of ownership explain why a three-year war seemed necessary?</p>
+
+        <h4>Framework 2: The Indian Policy Precedent (Historical Continuity)</h4>
+
+        <p><strong>Source:</strong> Walter L. Williams, "United States Indian Policy and the Debate over Philippine Annexation," <em>Journal of American History</em> 66:4 (March 1980)</p>
+
+        <p>Philippine annexation did not emerge spontaneously in 1898. It followed a clear institutional, legal, and ideological pattern already 70 years old: the pattern of U.S. colonialism toward Native Americans. Legal frameworks, administrative structures, racist ideologies, and even military personnel transferred directly.</p>
+
+        <div class="context-box">
+            <h4>Legal Evolution: The Path to Empire</h4>
+            <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                <li><strong>1820s–1831:</strong> Treaties with Indian nations, treating them as semi-sovereign.</li>
+                <li><strong>1831 (Cherokee Nation v. Georgia):</strong> Supreme Court ruled tribes were "domestic dependent nations" — subordinate to federal authority.</li>
+                <li><strong>1871:</strong> Congress ended treaty-making with tribes, asserting unilateral federal power.</li>
+                <li><strong>1885:</strong> Federal jurisdiction extended over Indians without their consent.</li>
+                <li><strong>1887 (Dawes Act):</strong> Broke up communal tribal lands into individual allotments, accelerating colonization and cultural assimilation.</li>
+                <li><strong>1879–1918 (Carlisle Indian Industrial School):</strong> Richard Henry Pratt's model of coercive cultural destruction reframed as "benevolence." "Kill the Indian, save the man." Strip language, culture, identity; replace with English, Christianity, "civilized" habits. This became the template for Philippine education policy under Taft.</li>
+                <li><strong>1890 (Wounded Knee Massacre):</strong> Approximately 250–300 Lakota killed by U.S. troops. Twenty soldiers received Medal of Honor. Demonstration of what "pacification" looked like. Same institutional logic applied eight years later in Philippines.</li>
+                <li><strong>1898:</strong> Indians classified as "dependent wards" of the federal government.</li>
+                <li><strong>1901–1922 (Insular Cases):</strong> Supreme Court extended identical framework to colonial territories — they too were "dependent" and not entitled to full constitutional protections.</li>
+            </ul>
+        </div>
+
+        <p>Note the Dawes Act quote: "When the public mind is directed to a discussion of the wisest and safest attitude toward [the insulars]... our policy with the Indians becomes an object lesson worthy of careful and candid study." American policymakers in 1898–1899 were explicitly studying Indian policy as a model for Philippine governance.</p>
+
+        <h4>Same Personnel, Same Ideology</h4>
+
+        <p>The Lake Mohonk Conference (1883–1916) had been an annual gathering of reformers advising on Indian policy. In 1900, the Conference expanded its mission to include "other dependent races" — explicitly including Filipinos. In 1904, it renamed itself to include "Other Dependent Peoples." The same people, organizations, and ideology extended from domestic indigenous policy to overseas colonization.</p>
+
+        <p>Pratt's Carlisle model — strip language, culture, identity — became the template for the Philippine public school system under Taft. "Benevolent assimilation" was "Kill the Indian, save the man" adapted, without changing the essential logic.</p>
+
+        <div class="warning-box">
+            <h4>What This Reveals</h4>
+            <p>The Philippines was not an aberration. The United States spent the entire nineteenth century developing a colonial model through its relationship with Native Americans. Those claiming "no tradition of colonialism" in 1898 were ignoring seventy years of practice.</p>
+        </div>
+
+        <p><strong>Discussion:</strong> Why is the Indian precedent often ignored in discussions of U.S. overseas expansion? How did the legal evolution make annexation possible? Were anti-imperialists hypocritical about the Indian Wars while opposing Philippines annexation?</p>
+
+        <h4>Framework 3: "Will It Pay?" (Economic and Moral Costs)</h4>
+
+        <p><strong>Source:</strong> William Jennings Bryan, "Will It Pay?" <em>New York Journal</em>, January 15, 1899</p>
+
+        <p>Bryan reframed the empire question from abstract destiny to concrete costs. His challenge: "If war is to be waged for trade, how much trade ought to be demanded in exchange for a human life?"</p>
+
+        <p>The cost-benefit analysis: Direct costs included a standing army of 100,000 troops, "vacant chairs" — families without breadwinners. Indirect costs included distraction from labor rights, trust-busting, and monopoly reform. Empire would empower monopolies and weaken reformers' ability to address domestic inequality. Bryan argued that the politics of patriotism and expansion would silence critics and weaken unions.</p>
+
+        <p>On claimed benefits: "Commerce is a matter of cost and not a matter of bunting" — trade can happen through treaties, commerce, diplomacy. It doesn't require conquest and permanent military occupation.</p>
+
+        <div class="context-box">
+            <h4>Gompers's Version</h4>
+            <p>Samuel Gompers, AFL president, made a similar argument from labor's perspective: "A 'foreign war as a cure for domestic discontent' has been the device of tyrants throughout the ages." Empire serves to distract public attention from wage stagnation, working conditions, and political powerlessness.</p>
+        </div>
+
+        <p><strong>Discussion:</strong> Was Bryan right about the actual costs? How does his domestic distraction argument connect to Gompers's labor critique? Is it possible to put a moral "price" on human life? Can such calculations persuade policy?</p>
+
+        <div class="context-box">
+            <h4>Synthesis: How the Three Frameworks Connect</h4>
+            <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                <li><strong>The Meddler's Trap:</strong> Explains the psychology — why decision-makers feel locked into deeper commitment once intervention begins.</li>
+                <li><strong>Indian Policy Precedent:</strong> Explains the structure — why the tools and logic were already available and normalized.</li>
+                <li><strong>"Will It Pay?":</strong> Explains the material reality — the actual human and economic costs that rational calculation alone should have prevented.</li>
+            </ul>
+            <p>These forces — psychological ownership from military intervention, institutional precedent from 70 years of Indian policy, and material costs that were quantifiable but politically overwhelming — worked together. The historical infrastructure was in place. The military intervention created psychological commitment. These forces together overrode rational cost-benefit analysis.</p>
+        </div>
+
+    </div><!-- end #postdebate -->
+
+    <!-- GRADED WORK SECTION -->
+    <div id="graded" class="section">
+        <div class="header">
+            <h2>Graded Work Product</h2>
+        </div>
+
+        <div class="overview-text">
+            <p>This simulation is assessed through four components. Each rewards preparation, engagement, and honest intellectual work — not performance polish or theater. The goal is to develop historical thinking, evidence-based argument, and the ability to defend complex positions under scrutiny.</p>
+        </div>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">1. Pre-Debate Discussion Posts (Homework)</h3>
+
+        <div class="context-box">
+            <h4>Purpose and Requirements</h4>
+            <p>As prep, complete assigned work and discussion posts. Posts serve as preparation — they force you to think through your character's arguments, engage with historical material, and develop positions you can defend.</p>
+            <p><strong>What matters:</strong> Depth of engagement with evidence. Specificity. Demonstration that you've read and thought about the Essential Reading and your Role Guide. Reasoned argument grounded in historical facts and sources — not mere opinion.</p>
+            <p><strong>Grading:</strong> Demonstrate clear engagement with readings and role. No credit for posts that are purely opinions without reference to historical material.</p>
+        </div>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">2. Simulation Performance and Teamwork</h3>
+
+        <div class="context-box">
+            <h4>Participation Across Both Sessions</h4>
+            <p><strong>Session 1 ("Advise the President"):</strong> Present your position clearly and concisely (3–5 minutes). Listen carefully to the President's probing questions and respond thoughtfully. After the session, work with your camp to synthesize arguments into a position statement.</p>
+            <p><strong>Session 2 ("Senate Foreign Relations Committee Hearing"):</strong> If you're a primary witness, deliver a 2–3 minute opening statement and respond to cross-examination. If you're a supporting member, ask challenging questions of opposing camps and support your witnesses.</p>
+            <p><strong>What matters:</strong> Historical accuracy. Willingness to engage with opposing arguments. Staying in character. Contributing to your camp's collective argument (not dominating or disappearing).</p>
+            <p><strong>Grading:</strong> Assessed on engagement. Historically informed argument scores higher than smooth argument with factual errors.</p>
+        </div>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">3. Post-Debate Reflection</h3>
+
+        <div class="context-box">
+            <h4>Brief Reflection Essay (Homework After Session 2)</h4>
+            <p>The exact assignment will be determined based on the flow of the debate. Step out of character and assess honestly: What surprised you? What arguments were stronger or weaker than you expected? How did the simulation change your understanding of the Philippines question, empire, or American history?</p>
+            <p><strong>What matters:</strong> Honest analysis, not cheerleading. Evidence that the simulation made you think — that you grappled with complexity and changed your mind about something, or at least reconsidered it.</p>
+            <p><strong>Grading:</strong> Demonstrate clear engagement with the ideas. No credit for summaries of what happened without analysis.</p>
+        </div>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">4. Debate Prep Notes</h3>
+
+        <div class="context-box">
+            <h4>Preparation Documentation</h4>
+            <p>Submit preparation notes demonstrating your research process: key arguments you developed, evidence sources, anticipated objections, and how you addressed them. These notes can be from your study process — not a polished document. Your teacher will see them to understand the depth of your preparation.</p>
+            <p><strong>Required: Clear sourcing.</strong> Cite the Essential Reading, your Role Guide, and any outside sources. Use author/title format as parenthetical citations. Help your teacher trace your evidence.</p>
+            <p><strong>Critical: AI transparency.</strong> If you used any AI tools — including the AI Prep Coach, ChatGPT, Claude, or any other AI — you MUST indicate clearly what is AI-assisted and what is your own work. Using AI is not penalized. Hiding AI use IS heavily penalized.</p>
+            <p><strong>What matters:</strong> Demonstrated preparation. Honest attribution. Showing the work behind your argument. The notes don't need to be beautiful; they need to be honest and thorough.</p>
+            <p><strong>Format:</strong> Bullet points are fine. Outline format is fine. Prose is fine. Show your thinking.</p>
+        </div>
+
+        <h3 style="color: #8b0000; margin: 2rem 0 1rem 0;">AI Prep Coach</h3>
+
+        <div class="warning-box">
+            <h4>Available Resource (Optional but Encouraged)</h4>
+            <p>Your teacher has provided access to an <strong>AI Prep Coach</strong> — an AI tool designed to help you prepare for this simulation. It uses a "Senator's Inquiry" format to pressure-test your arguments: it will challenge you, ask for evidence, propose objections, and push back on weak reasoning. You can access it through free ChatGPT or Claude mobile app voice mode. Using it will make you a better debater.</p>
+            <p><strong>Important:</strong> Note your use of the AI Coach in your prep notes. Indicate which arguments or aspects of your position came from working with the Coach (even if you then developed them further yourself). This shows intellectual honesty and gets you full credit for the preparation.</p>
+            <p><strong>Bottom line:</strong> Prepare well. Use all available tools. Just be transparent about it.</p>
+        </div>
+
+    </div><!-- end #graded -->
+
+</div><!-- end .container -->
+
+<script>
+    function showSection(sectionId, btn) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+        if (btn) btn.classList.add('active');
+        window.scrollTo(0, 0);
+    }
+</script>
+</body>
+</html>
